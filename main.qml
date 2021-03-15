@@ -11,6 +11,7 @@ ApplicationWindow {
     title: qsTr("Scroll")
     property int propertyListViewHeight1:0
     property int propertyListViewHeight2:0
+    property int propertyListViewHeight3:0
 
     ScrollView {
         id: scrollView
@@ -21,10 +22,10 @@ ApplicationWindow {
                 id: lv1
                 anchors.top: parent.top
                 width: parent.width
-                model: 5
-                 Layout.minimumHeight: propertyListViewHeight1
+                model: 3
+                Layout.minimumHeight: propertyListViewHeight1
                 delegate: ItemDelegate {
-                    text: "Item " + (index)
+                    text: "A " + (index)
                     width: 500
                     Component.onCompleted: {
                         propertyListViewHeight1 += height
@@ -35,13 +36,27 @@ ApplicationWindow {
                 id: lv2
                 anchors.top: lv1.bottom
                 width: parent.width
-                model: 5
+                model: 4
                 Layout.minimumHeight: propertyListViewHeight2
                 delegate: ItemDelegate {
                     width: 500
-                    text: "XXX " + (index)
+                    text: "B " + (index)
                     Component.onCompleted: {
                         propertyListViewHeight2 += height
+                    }
+                }
+            }
+            ListView {
+                id: lv3
+                anchors.top: lv2.bottom
+                width: parent.width
+                model: 5
+                Layout.minimumHeight: propertyListViewHeight3
+                delegate: ItemDelegate {
+                    width: 500
+                    text: "C " + (index)
+                    Component.onCompleted: {
+                        propertyListViewHeight3 += height
                     }
                 }
             }
