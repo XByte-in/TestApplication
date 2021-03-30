@@ -24,13 +24,18 @@ Window {
 
     property alias pDialogType: dialog.pDialogType
     property alias pButtonsList: dialog.pButtonsList
+    property alias pSubtitle: dialog.pSubtitle
     property alias pDescription: dialog.pDescription
     property alias pNotice: dialog.pNotice
+    property alias pHyperlink: dialog.pHyperlink
     property alias pDialogImageSource: dialog.pDialogImageSource
     property alias pCheckBoxText: dialog.pCheckBoxText
-    property bool pCheckBoxState: dialog.pCheckBoxState
+    property bool pCheckBoxState: dialog.pCheckBoxState    
+    property alias pCloseBtnVisible: dialog.pCloseBtnVisible
 
     signal closeClicked
+    signal checkBoxClicked(var checked)
+    signal hyperlinkClicked()
 
     onVisibleChanged: {
         if (visible)
@@ -43,6 +48,9 @@ Window {
             id: dialog
             title: messageWindow.title
             closePolicy: Popup.NoAutoClose
+            onCheckBoxClicked: {
+                messageWindow.checkBoxClicked(checked)
+            }
             onCloseClicked: {
                 messageWindow.closeClicked()
                 close()
@@ -50,6 +58,9 @@ Window {
             onClosed: {
                 messageWindow.close()
                 messageWindow.destroy()
+            }
+            onHyperlinkClicked: {
+                messageWindow.hyperlinkClicked()
             }
         }
     }

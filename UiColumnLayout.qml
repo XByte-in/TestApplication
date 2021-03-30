@@ -27,6 +27,11 @@ Rectangle {
     implicitHeight: iColumnLayout.implicitHeight + topPadding + bottomPadding
     color: "transparent"
 
+    MouseArea {
+        id: mouseArea
+        enabled: false
+    }
+
     ColumnLayout {
         id: iColumnLayout
         x: leftPadding
@@ -35,10 +40,5 @@ Rectangle {
         height: parent.height - topPadding - bottomPadding
         anchors.margins: 0
         spacing: 0
-    }
-
-    MouseArea {
-        id: mouseArea
-        enabled: false
     }
 }

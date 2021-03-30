@@ -103,6 +103,7 @@ ComboBox {
                 color: "transparent"
                 border.width: 1
                 border.color: iControl.pColor.normal.border
+                anchors.topMargin:  -border.width
             }
 
             ScrollIndicator.vertical: ScrollIndicator { }

@@ -1,5 +1,5 @@
 import QtQuick 2.0
-
+import UiToolTipControl 1.0
 UiTextField {
     id: iControl
 
@@ -16,7 +16,8 @@ UiTextField {
         border.color: pTextFieldProperties.borderColor
     }
 
-    UiImageButton {
+    UiImageButton {        
+        UiToolTip.text: qsTranslate("QObject", "Save")
         anchors { verticalCenter: parent.verticalCenter ; right: parent.right;}
         anchors.rightMargin: pTextFieldProperties.rightPadding
         asset: iControl.pAsset

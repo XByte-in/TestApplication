@@ -50,8 +50,8 @@ QtObject {
     }
 
     property QtObject fonts: QtObject {
-        property FontLoader normalFont: FontLoader { source: "Rubik-Regular.ttf" }
-        property FontLoader mediumFont: FontLoader { source: "Rubik-Medium.ttf" }
+        property FontLoader normalFont: FontLoader { source: "fonts/Rubik-Regular.ttf" }
+        property FontLoader mediumFont: FontLoader { source: "fonts/Rubik-Medium.ttf" }
 
         property font titleExtraLarge: Qt.font({
                                                    "family": mediumFont.name,
@@ -242,6 +242,12 @@ QtObject {
                 property real horizontalPadding: 8
                 property font textFont: fonts.bodySmall
             }
+
+            property QtObject extraSmall: QtObject {
+                property real height: 21
+                property real horizontalPadding: 6
+                property font textFont: fonts.bodyExtraSmall
+            }
         }
 
         property QtObject colors: QtObject {
@@ -313,7 +319,7 @@ QtObject {
                 property real iconHeight: 12
                 property string iconAsset: "SmallRadio"
                 property real spacing: 8
-                property font textFont: fonts.buttonSmall
+                property font textFont: fonts.bodySmall
             }
         }
     }
@@ -416,12 +422,12 @@ QtObject {
 
     property QtObject toggleButtons: QtObject {
         property QtObject sizes: QtObject {
-            property QtObject large: QtObject {
+            property QtObject medium: QtObject {
                 property real iconWidth: 28
                 property real iconHeight: 14
                 property string iconAsset: "MediumToggle"
                 property real spacing: 8
-                property font textFont: fonts.bodyLarge
+                property font textFont: fonts.bodyMedium
             }
 
             property QtObject small: QtObject {
@@ -429,7 +435,7 @@ QtObject {
                 property real iconHeight: 12
                 property string iconAsset: "SmallToggle"
                 property real spacing: 8
-                property font textFont: fonts.buttonSmall
+                property font textFont: fonts.bodySmall
             }
         }
     }
@@ -465,6 +471,7 @@ QtObject {
                 property real footerHorizontalSpacing: 16
                 property real footerVerticalSpacing: 16
                 property font titleFont: fonts.titleMedium
+                property font subtitleFont: fonts.bodyExtraLarge
                 property font descriptionFont: fonts.bodyLarge
                 property font noticeFont: fonts.bodyLarge
                 property real iconWidth: 20
@@ -483,6 +490,7 @@ QtObject {
                 property real footerHorizontalSpacing: 16
                 property real footerVerticalSpacing: 16
                 property font titleFont: fonts.titleMedium
+                property font subtitleFont: fonts.bodyExtraLarge
                 property font descriptionFont: fonts.bodyLarge
                 property font noticeFont: fonts.bodyLarge
                 property real iconWidth: 20
@@ -501,6 +509,7 @@ QtObject {
                 property real footerHorizontalSpacing: 16
                 property real footerVerticalSpacing: 16
                 property font titleFont: fonts.titleMedium
+                property font subtitleFont: fonts.bodyExtraLarge
                 property font descriptionFont: fonts.bodyLarge
                 property font noticeFont: fonts.bodyLarge
                 property real iconWidth: 72
@@ -509,20 +518,21 @@ QtObject {
 
             property QtObject tall: QtObject {
                 property real width: 320
-                property real padding: 16
+                property real padding: 20
                 property real headerHorizontalSpacing: 0
                 property real headerVerticalSpacing: 0
                 property real contentTopMargin: 20
                 property real contentBottomMargin: 20
                 property real contentVerticalSpacing: 8
                 property real contentHorizontalSpacing: 0
-                property real footerHorizontalSpacing: 16
+                property real footerHorizontalSpacing: 0
                 property real footerVerticalSpacing: 16
                 property font titleFont: fonts.titleMedium
+                property font subtitleFont: fonts.bodyExtraLarge
                 property font descriptionFont: fonts.bodyLarge
                 property font noticeFont: fonts.bodyLarge
-                property real iconWidth: 72
-                property real iconHeight: 72
+                property real iconWidth: 96
+                property real iconHeight: 96
             }
         }
 
@@ -531,6 +541,7 @@ QtObject {
                 property color background: colors.primary70
                 property color border: colors.primary60
                 property color title: colors.primary10
+                property color subtitle: colors.primary10
                 property color description: colors.primary20
                 property color notice: colors.warning
             }

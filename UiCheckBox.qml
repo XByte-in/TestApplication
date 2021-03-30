@@ -21,8 +21,8 @@ CheckBox {
     indicator: UiImage {
         x: iControl.text ? iControl.leftPadding : iControl.leftPadding + (iControl.availableWidth - width) / 2
         y: iControl.topPadding + (iControl.availableHeight / iContent.lineCount - height) / 2
-        width: 12
-        height: 12
+        width: iControl.pSize.iconWidth
+        height: iControl.pSize.iconHeight
         asset: iControl.pSize.iconAsset + (iControl.checked ? "On" : "Off") + (iControl.hovered? "_hover" : "")
     }
 

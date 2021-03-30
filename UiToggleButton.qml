@@ -16,7 +16,7 @@ import QtQuick.Controls.impl 2.12
 
 Switch  {
     id: iControl
-    property QtObject pSize: UiTheme.toggleButtons.sizes.large
+    property QtObject pSize: UiTheme.toggleButtons.sizes.medium
     property string imageToolTip: ""
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,

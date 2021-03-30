@@ -31,12 +31,17 @@ Dialog {
     property int pDialogType
     property DialogButtonModelList pButtonsList: DialogButtonModelList { }
     property string pDescription
+    property string pSubtitle: ""
     property string pNotice: ""
     property string pDialogImageSource: ""
     property string pCheckBoxText: ""
+    property string pHyperlink: ""
     property bool pCheckBoxState: iDialogCheckBox.checked
+    property bool pCloseBtnVisible: true
 
     signal closeClicked()
+    signal checkBoxClicked(var checked)
+    signal hyperlinkClicked()
 
     width: pSize.width
     height: Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -47,8 +52,6 @@ Dialog {
     padding: pSize.padding
     topPadding: pSize.contentTopMargin
     bottomPadding: pSize.contentBottomMargin
-
-    title: "Dialogue title"
 
     background: Rectangle {
         color: iControl.pColor.background
@@ -85,6 +88,7 @@ Dialog {
                 elide: Text.ElideRight
             }
             UiImageButton {
+                visible: iControl.pCloseBtnVisible
                 asset: "CloseIcon"
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
@@ -114,9 +118,10 @@ Dialog {
         }
         UiColumnLayout {
             Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
             spacing: iControl.pSize.contentVerticalSpacing
             Text {
-                visible: iControl.pDialogType === UiDialog.DialogTypes.Tall
+                visible: iControl.pDialogType === UiDialog.DialogTypes.Tall && text !== ""
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
                 text: iControl.title
@@ -125,6 +130,16 @@ Dialog {
                 wrapMode: Text.Wrap
             }
             Text {
+                visible: text !== ""
+                Layout.fillWidth: true
+                text: iControl.pSubtitle
+                horizontalAlignment: iControl.pDialogType === UiDialog.DialogTypes.Tall ? Text.AlignHCenter : undefined
+                font: iControl.pSize.subtitleFont
+                color: iControl.pColor.subtitle
+                wrapMode: Text.Wrap
+            }
+            Text {
+                visible: text !== ""
                 Layout.fillWidth: true
                 text: iControl.pDescription
                 horizontalAlignment: iControl.pDialogType === UiDialog.DialogTypes.Tall ? Text.AlignHCenter : undefined
@@ -141,6 +156,30 @@ Dialog {
                 color: iControl.pColor.notice
                 wrapMode: Text.Wrap
             }
+            Text {
+                id: iHyperlinkText
+                visible: text !== ""
+                Layout.fillWidth: true
+                horizontalAlignment: iControl.pDialogType === UiDialog.DialogTypes.Tall ? Text.AlignHCenter : undefined
+                text: iControl.pHyperlink
+                font: UiTheme.fonts.bodySmall
+                color: UiTheme.colors.accentNormal
+                wrapMode: Text.Wrap
+                MouseArea {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+                    onEntered:  {
+                        iHyperlinkText.font.underline = true
+                    }
+                    onExited:  {
+                        iHyperlinkText.font.underline = false
+                    }
+                    onClicked: {
+                        iControl.hyperlinkClicked()
+                    }
+                }
+            }
             UiCheckBox {
                 id: iDialogCheckBox
                 visible: text !== ""
@@ -148,6 +187,9 @@ Dialog {
                 Layout.alignment: iControl.pDialogType === UiDialog.DialogTypes.Tall ? Qt.AlignHCenter : Qt.AlignLeft
                 pSize: UiTheme.checkBoxes.sizes.medium
                 text: iControl.pCheckBoxText
+                onClicked: {
+                    iControl.checkBoxClicked(checked)
+                }
             }
         }
     }
@@ -160,7 +202,8 @@ Dialog {
         implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                                  topPadding + bottomPadding + listView.contentItem.childrenRect.height)
 
-        spacing: iControl.pSize.footerHorizontalSpacing
+        spacing: iControl.pDialogType === UiDialog.DialogTypes.Tall
+                 ? iControl.pSize.footerVerticalSpacing : iControl.pSize.footerHorizontalSpacing
         topPadding: 0
         leftPadding: iControl.padding +
                      ((pDialogImageSource != "" && iControl.pDialogType === UiDialog.DialogTypes.Descriptive)

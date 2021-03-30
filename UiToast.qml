@@ -21,6 +21,7 @@ Rectangle {
     property real pTime: pDefaultTime
     readonly property real pFadeTime: 300
     property real pMargin: 8
+    property bool pShowCross: true
 
     height: iMessage.height + pMargin
     width: iMessage.width + pMargin * 2
@@ -41,11 +42,11 @@ Rectangle {
         Text {
             id: iMessage
             color: UiTheme.colors.secondaryHover
-            font: UiTheme.fonts.titleSmall
+            font: UiTheme.fonts.bodySmall
             wrapMode: Text.Wrap
             Layout.leftMargin: 8
-            width: iToastRect.width - 40
-            Layout.maximumWidth: iToastRect.width - 40
+            width: pShowCross ? iToastRect.width - 40 : iToastRect.width - 16
+            Layout.maximumWidth: pShowCross ? iToastRect.width - 40 : iToastRect.width - 16
             horizontalAlignment: Text.AlignHCenter
         }
         UiImageButton{
@@ -53,6 +54,7 @@ Rectangle {
             width: 16
             height: 16
             Layout.rightMargin: 8
+            visible: pShowCross
             onClicked: {
                 iCloseAnimation.start()
                 iToastRect.visible = false

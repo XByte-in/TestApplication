@@ -17,6 +17,8 @@ Button {
     property string asset
     property string extn: ".svg"
     property var pMouseCursor
+    property bool pImageAnimationRunning: false
+    property bool pImageCache: true
 
     horizontalPadding: 0
     verticalPadding: 0
@@ -30,12 +32,27 @@ Button {
         color: "transparent"
     }
 
+    onPImageAnimationRunningChanged: {
+        if (!pImageAnimationRunning)
+            iControl.contentItem.rotation = 0
+    }
+
     contentItem: UiImage {
         anchors.centerIn: parent
-        asset: iControl.asset + (iControl.down ? "_click" : (iControl.hovered ? "_hover" : ""))
+        asset: iControl.pImageAnimationRunning ? "SidebarLoader_white"
+                                               : iControl.asset + (iControl.down ? "_click" : (iControl.hovered ? "_hover" : ""))
         extn: iControl.extn
         width: iControl.availableWidth
         height: iControl.availableHeight
+        cache: iControl.pImageCache
+        RotationAnimation on rotation {
+            loops: Animation.Infinite
+            duration: 1000
+            from: 0
+            to: 360
+            direction: RotationAnimation.Clockwise
+            running: iControl.pImageAnimationRunning
+        }
     }
 
     MouseArea {

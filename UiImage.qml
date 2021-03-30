@@ -9,11 +9,12 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import UiToolTipControl 1.0
 
 Image {
     property string asset
     property string extn: ".svg"
-    source: visible ? ((extn === ".svg") ? "svg/" : "") + asset + extn : ""
+    source: asset === "" ? "" : "qrcAssets/" + asset + extn
     sourceSize.width: (extn === ".svg") ? width : undefined
     sourceSize.height: (extn === ".svg") ? height : undefined
     fillMode: Image.PreserveAspectFit
