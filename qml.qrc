@@ -412,5 +412,6 @@
         <file>qrcAssets/VerySmallSettings_click.svg</file>
         <file>qrcAssets/VerySmallSettings_hover.svg</file>
         <file>qrcAssets/Zoom.svg</file>
+        <file>CustomBorder.qml</file>
     </qresource>
 </RCC>

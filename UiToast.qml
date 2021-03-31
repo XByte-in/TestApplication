@@ -13,52 +13,42 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
 
-Rectangle {
-
-    id: iToastRect
-
+UiRowLayout {
+    id: iToastRow
     readonly property real pDefaultTime: 3000
     property real pTime: pDefaultTime
     readonly property real pFadeTime: 300
     property real pMargin: 8
     property bool pShowCross: true
 
-    height: iMessage.height + pMargin
-    width: iMessage.width + pMargin * 2
-    radius: height / 2
-    opacity: 0
     color: UiTheme.colors.overLayBlack
-    anchors {
-        left: parent.left
-        right: parent.right
-        margins: pMargin
-    }
 
-    UiRowLayout{
-        id: iLayout
-        anchors.fill: parent
-        spacing: 0
-        Layout.alignment: Qt.AlignVCenter
-        Text {
-            id: iMessage
-            color: UiTheme.colors.secondaryHover
-            font: UiTheme.fonts.bodySmall
-            wrapMode: Text.Wrap
-            Layout.leftMargin: 8
-            width: pShowCross ? iToastRect.width - 40 : iToastRect.width - 16
-            Layout.maximumWidth: pShowCross ? iToastRect.width - 40 : iToastRect.width - 16
-            horizontalAlignment: Text.AlignHCenter
-        }
-        UiImageButton{
-            asset: "CloseIcon"
-            width: 16
-            height: 16
-            Layout.rightMargin: 8
-            visible: pShowCross
-            onClicked: {
-                iCloseAnimation.start()
-                iToastRect.visible = false
-            }
+    x: parent.x + parent.width/2 - width/2
+    y: parent.y + 20
+
+    leftPadding: 10
+    rightPadding: 10
+    topPadding: 5
+    bottomPadding: 5
+
+    spacing: 10
+
+    visible: false
+    Layout.alignment: Qt.AlignVCenter
+    Text {
+        id: iMessage
+        color: UiTheme.colors.secondaryHover
+        font: UiTheme.fonts.bodySmall
+        wrapMode: Text.Wrap
+    }
+    UiImageButton{
+        asset: "CloseIcon"
+        width: 16
+        height: 16
+        visible: pShowCross
+        onClicked: {
+            iCloseAnimation.start()
+            iToastRow.visible = false
         }
     }
     SequentialAnimation on opacity {
@@ -81,7 +71,7 @@ Rectangle {
         }
         onRunningChanged: {
             if(!running)
-                iToastRect.visible = false
+                iToastRow.visible = false
         }
     }
 
@@ -95,7 +85,7 @@ Rectangle {
         }
         onRunningChanged: {
             if(!running)
-                iToastRect.visible = false
+                iToastRow.visible = false
         }
     }
 
@@ -108,7 +98,7 @@ Rectangle {
         else {
             pTime = pDefaultTime;
         }
-        iToastRect.visible = true
+        iToastRow.visible = true
         iFullAnimation.start();
     }
 }

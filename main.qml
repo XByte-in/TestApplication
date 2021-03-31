@@ -11,8 +11,11 @@ import UiToolTipControl 1.0
 
 ApplicationWindow {
     id: appwin
-    width: 600
-    height: 600
+    color: "transparent"
+    flags: Qt.Window | Qt.FramelessWindowHint
+    title: qsTranslate("QObject", "%1 macro manager")
+    width: 540 + 2* iShadow.shadowThickness
+    height: 360 + 2* iShadow.shadowThickness
     visible: true
 
     property bool pMacroRecordingControlVisible: false
@@ -22,17 +25,40 @@ ApplicationWindow {
     property var pMacroRecordingPausedTime: -1
     property string pMacroRecordingControlText: "00:00:00"
     property string pMacroRecordingControlIterationText: "{} Time"
-    Rectangle {
-        anchors.fill: parent
-        color: "#232642"
-        MouseArea {
+    UiShadowContainer{
+        id:iShadow
+
+        Rectangle {
             anchors.fill: parent
+            color: UiTheme.colors.primary80
         }
-    }
-    UiComboBox {
-        id: iCustomCpuCombobx
-        model: [1,2,3,4,5,6,7,89,90]        
-        pSize: UiTheme.comboBoxes.sizes.medium
-        width: 200
+        UiRowLayout {
+            id: iRow
+
+            color: UiTheme.colors.overLayBlack
+
+            x: parent.x + parent.width/2 - width/2
+            y: parent.y + 10
+
+            leftPadding: 10
+            rightPadding: 10
+            topPadding: 5
+            bottomPadding: 5
+
+            spacing: 10
+            Layout.alignment: Qt.AlignVCenter
+            Text {
+                id: iMessage
+                color: UiTheme.colors.secondaryHover
+                font: UiTheme.fonts.bodySmall
+                wrapMode: Text.Wrap
+                text: "I macro imported successfully"
+            }
+            UiImageButton{
+                asset: "CloseIcon"
+                width: 16
+                height: 16
+            }
+        }
     }
 }
