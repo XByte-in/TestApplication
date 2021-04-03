@@ -21,8 +21,8 @@ ApplicationWindow {
     ListModel { id: iModel }
 
     Component.onCompleted: {
-        iModel.append( { text: "Default 1" })
-        iModel.append( { text: "Default 2" })
+        //iModel.append( { text: "Default 1" })
+        //iModel.append( { text: "Default 2" })
     }
 
     UiShadowContainer{
@@ -33,46 +33,6 @@ ApplicationWindow {
         UiColumnLayout{
             width: 280 - 24
             spacing: 10
-
-            Rectangle {
-                Layout.fillWidth: true
-                height: iTestCombobox.height
-                UiRowLayout {
-                    anchors.fill:parent
-                    color: UiTheme.colors.primary90
-                    z: 1000
-                    leftPadding: 8
-                    rightPadding: 8
-                    topPadding: 5
-                    bottomPadding: 5
-                    spacing: 8
-                    UiImageButton {
-                        asset: "AddSmall"
-                        Layout.preferredHeight: 12
-                        Layout.preferredWidth: 12
-                        Layout.alignment: Qt.AlignVCenter
-                        onClicked: {
-                            iModel.append( { text: "Default" })
-                        }
-                    }
-
-                    Text {
-                        text: qsTranslate("QObject", "Create new profile")
-                        font: UiTheme.fonts.bodySmall
-                        color: UiTheme.colors.primary10
-                        Layout.alignment: Qt.AlignVCenter
-                        Layout.fillWidth: true
-                    }
-
-                }
-            }
-
-
-
-
-
-
-
 
             UiComboBox {
                 id: iTestCombobox
@@ -167,26 +127,26 @@ ApplicationWindow {
                         }
 
                         Rectangle {
+                            border.width: 1
+                            border.color: iTestCombobox.pColor.normal.border
+                            anchors.topMargin: -1
                             Layout.fillWidth: true
                             height: iTestCombobox.height
+                            color: iFooterMouseArea.containsMouse? UiTheme.colors.primary80: UiTheme.colors.primary90
+
                             UiRowLayout {
                                 anchors.fill:parent
-                                id: iFooter
-                                color: UiTheme.colors.primary90
                                 z: 1000
                                 leftPadding: 8
                                 rightPadding: 8
                                 topPadding: 5
                                 bottomPadding: 5
                                 spacing: 8
-                                UiImageButton {
+                                UiImage {
                                     asset: "AddSmall"
                                     Layout.preferredHeight: 12
                                     Layout.preferredWidth: 12
                                     Layout.alignment: Qt.AlignVCenter
-                                    onClicked: {
-                                        iModel.append( { text: "Default" })
-                                    }
                                 }
 
                                 Text {
@@ -198,7 +158,10 @@ ApplicationWindow {
 
                             }
                             MouseArea {
+                                id: iFooterMouseArea
                                 anchors.fill: parent
+                                hoverEnabled: true
+                                onPressed: {  iModel.append( { text: "Default" })}
                             }
                         }
                     }
