@@ -21,8 +21,6 @@ ApplicationWindow {
     ListModel { id: iModel }
 
     Component.onCompleted: {
-        //iModel.append( { text: "Default 1" })
-        //iModel.append( { text: "Default 2" })
     }
 
     UiShadowContainer{
@@ -41,6 +39,22 @@ ApplicationWindow {
                 Layout.preferredHeight: 24
                 Layout.alignment: Qt.AlignCenter
                 model:iModel
+
+                contentItem: UiTextField {
+                    pSize: iTestCombobox.pSize.textField
+                    pColor: iTestCombobox.pColor.textField
+                    pColorState: iTestCombobox.hovered ? pColor.hover : pColor.normal
+                    rightPadding: 0
+                    text: iModel.count === 0 ? "Custom": iTestCombobox.displayText
+                    enabled: false
+                    autoScroll: false
+                    readOnly: true
+
+                    background: Rectangle {
+                        color: "transparent"
+                    }
+                }
+
                 delegate:  ItemDelegate {
                     width: ListView.view.width
                     height: iTestCombobox.height
