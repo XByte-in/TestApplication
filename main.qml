@@ -18,22 +18,21 @@ ApplicationWindow {
     height: 360 + 2* iShadow.shadowThickness
     visible: true
 
+    property int count: 0
     ListModel { id: iModel }
 
-    Component.onCompleted: {
-    }
+    Component.onCompleted: { }
 
     UiShadowContainer{
         id:iShadow
         Rectangle { anchors.fill: parent; color: UiTheme.colors.primary80 }
-
 
         UiColumnLayout{
             width: 280 - 24
             spacing: 10
 
             UiComboBox {
-                id: iTestCombobox
+                id: iSchemeCombobox
                 pSize: UiTheme.comboBoxes.sizes.small
                 Layout.fillWidth: true
                 Layout.preferredHeight: 24
@@ -41,26 +40,24 @@ ApplicationWindow {
                 model:iModel
 
                 contentItem: UiTextField {
-                    pSize: iTestCombobox.pSize.textField
-                    pColor: iTestCombobox.pColor.textField
-                    pColorState: iTestCombobox.hovered ? pColor.hover : pColor.normal
+                    pSize: iSchemeCombobox.pSize.textField
+                    pColor: iSchemeCombobox.pColor.textField
+                    pColorState: iSchemeCombobox.hovered ? pColor.hover : pColor.normal
                     rightPadding: 0
-                    text: iModel.count === 0 ? "Custom": iTestCombobox.displayText
+                    text: iModel.count === 0 ? "Custom": iSchemeCombobox.displayText
                     enabled: false
                     autoScroll: false
                     readOnly: true
 
-                    background: Rectangle {
-                        color: "transparent"
-                    }
+                    background: Rectangle { color: "transparent" }
                 }
 
                 delegate:  ItemDelegate {
                     width: ListView.view.width
-                    height: iTestCombobox.height
-                    palette.highlightedText: iTestCombobox.contentItem.pColor.active.textColor
-                    highlighted: iTestCombobox.highlightedIndex === index
-                    hoverEnabled: iTestCombobox.hoverEnabled
+                    height: iSchemeCombobox.height
+                    palette.highlightedText: iSchemeCombobox.contentItem.pColor.active.textColor
+                    highlighted: iSchemeCombobox.highlightedIndex === index
+                    hoverEnabled: iSchemeCombobox.hoverEnabled
 
                     contentItem:  UiRowLayout {
                         id: iModelDelegate
@@ -75,7 +72,7 @@ ApplicationWindow {
                             font: UiTheme.fonts.bodySmall
                             color: UiTheme.colors.primary10
                             UiToolTip.text: text
-                            Layout.maximumWidth: iTestCombobox.width -80
+                            Layout.maximumWidth: iSchemeCombobox.width -80
                             Layout.alignment: Qt.AlignVCenter
                         }
                         Item {
@@ -108,24 +105,24 @@ ApplicationWindow {
                     }
 
                     background: Rectangle {
-                        color: highlighted ? iTestCombobox.pColor.dropDownHighlight :
-                                             iTestCombobox.currentIndex === index ? iTestCombobox.pColor.dropDownSelection : "transparent"
+                        color: highlighted ? iSchemeCombobox.pColor.dropDownHighlight :
+                                             iSchemeCombobox.currentIndex === index ? iSchemeCombobox.pColor.dropDownSelection : "transparent"
                     }
                 }
 
                 popup: Popup {
-                    y: iTestCombobox.height
-                    width: iTestCombobox.width
-                    height: Math.min(contentItem.implicitHeight, iTestCombobox.pSize.maxDropDownHeight, iTestCombobox.Window.height)
+                    y: iSchemeCombobox.height
+                    width: iSchemeCombobox.width
+                    height: Math.min(contentItem.implicitHeight, iSchemeCombobox.pSize.maxDropDownHeight, iSchemeCombobox.Window.height)
                     padding: 0
 
                     contentItem: UiColumnLayout {
                         ListView {
                             id: iListView
                             implicitHeight: contentHeight
-                            implicitWidth: iTestCombobox.width
-                            model: iTestCombobox.delegateModel
-                            currentIndex: iTestCombobox.highlightedIndex
+                            implicitWidth: iSchemeCombobox.width
+                            model: iSchemeCombobox.delegateModel
+                            currentIndex: iSchemeCombobox.highlightedIndex
                             highlightMoveDuration: 0
                             Layout.maximumHeight: 130
 
@@ -136,16 +133,20 @@ ApplicationWindow {
                                 height: parent.height
                                 color: "transparent"
                                 border.width: 1
-                                border.color: iTestCombobox.pColor.normal.border
+                                border.color: iSchemeCombobox.pColor.normal.border
+                            }
+
+                            onCurrentIndexChanged: {
+                                console.log(iSchemeCombobox.currentIndex)
                             }
                         }
 
                         Rectangle {
                             border.width: 1
-                            border.color: iTestCombobox.pColor.normal.border
+                            border.color: iSchemeCombobox.pColor.normal.border
                             anchors.topMargin: -1
                             Layout.fillWidth: true
-                            height: iTestCombobox.height
+                            height: iSchemeCombobox.height
                             color: iFooterMouseArea.containsMouse? UiTheme.colors.primary80: UiTheme.colors.primary90
 
                             UiRowLayout {
@@ -162,25 +163,26 @@ ApplicationWindow {
                                     Layout.preferredWidth: 12
                                     Layout.alignment: Qt.AlignVCenter
                                 }
-
                                 Text {
                                     text: qsTranslate("QObject", "Create new profile")
                                     font: UiTheme.fonts.bodySmall
                                     color: UiTheme.colors.primary10
                                     Layout.alignment: Qt.AlignVCenter
                                 }
-
                             }
                             MouseArea {
                                 id: iFooterMouseArea
                                 anchors.fill: parent
                                 hoverEnabled: true
-                                onPressed: {  iModel.append( { text: "Default" })}
+                                onPressed: {
+                                    iModel.append( { text: "Default " + count})
+                                    count++
+                                }
                             }
                         }
                     }
                     background: Rectangle {
-                        color:  iTestCombobox.pColor.normal.background
+                        color:  iSchemeCombobox.pColor.normal.background
                     }
                 }
             }
