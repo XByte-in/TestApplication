@@ -21,11 +21,22 @@ ApplicationWindow {
     property int count: 0
     ListModel { id: iModel }
 
-    Component.onCompleted: { }
+    Component.onCompleted: {
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+        iModel.append( { text: "Default " + (++count)})
+    }
 
     UiShadowContainer{
         id:iShadow
-        Rectangle { anchors.fill: parent; color: UiTheme.colors.primary80 }
+        Rectangle { anchors.fill: parent; color:UiTheme.colors.primary80 } //"Aqua" } //
 
         UiColumnLayout{
             width: 280 - 24
@@ -117,6 +128,11 @@ ApplicationWindow {
                     padding: 0
 
                     contentItem: UiColumnLayout {
+                        width: parent.width
+                        height: iListView.height + iFooter.height +1
+                        color: "transparent"
+                        border.width: 1
+                        border.color: iSchemeCombobox.pColor.normal.border
                         ListView {
                             id: iListView
                             implicitHeight: contentHeight
@@ -127,23 +143,10 @@ ApplicationWindow {
                             Layout.maximumHeight: 130
 
                             ScrollIndicator.vertical: ScrollIndicator { }
-                            Rectangle {
-                                z: 10
-                                width: parent.width
-                                height: parent.height
-                                color: "transparent"
-                                border.width: 1
-                                border.color: iSchemeCombobox.pColor.normal.border
-                            }
-
-                            onCurrentIndexChanged: {
-                                console.log(iSchemeCombobox.currentIndex)
-                            }
+                            clip: true
                         }
-
                         Rectangle {
-                            border.width: 1
-                            border.color: iSchemeCombobox.pColor.normal.border
+                            id: iFooter
                             anchors.topMargin: -1
                             Layout.fillWidth: true
                             height: iSchemeCombobox.height
