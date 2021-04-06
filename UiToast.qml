@@ -23,7 +23,7 @@ UiRowLayout {
 
     color: UiTheme.colors.overLayBlack
 
-    x: parent.x + parent.width/2 - width/2
+    x: parent.x + parent.width/2 - implicitWidth/2 - 15
     y: parent.y + 20
 
     leftPadding: 10
@@ -34,14 +34,13 @@ UiRowLayout {
     spacing: 10
 
     visible: false
-    Layout.alignment: Qt.AlignVCenter
     Text {
         id: iMessage
         color: UiTheme.colors.secondaryHover
         font: UiTheme.fonts.bodySmall
         wrapMode: Text.Wrap
     }
-    UiImageButton{
+    UiImageButton {
         asset: "CloseIcon"
         width: 16
         height: 16
@@ -51,6 +50,7 @@ UiRowLayout {
             iToastRow.visible = false
         }
     }
+
     SequentialAnimation on opacity {
         id: iFullAnimation
         running: false
