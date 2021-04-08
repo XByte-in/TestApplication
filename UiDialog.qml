@@ -217,6 +217,7 @@ Dialog {
             spacing: iControlFooter.spacing
             orientation: iControl.pDialogType === UiDialog.DialogTypes.Tall ? ListView.Vertical : ListView.Horizontal
             layoutDirection: Qt.RightToLeft
+            interactive: false
             onCountChanged:{
                 if(listView.contentWidth > iControlFooter.availableWidth)
                     listView.orientation = ListView.Vertical

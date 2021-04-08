@@ -413,5 +413,6 @@
         <file>qrcAssets/VerySmallSettings_hover.svg</file>
         <file>qrcAssets/Zoom.svg</file>
         <file>CustomBorder.qml</file>
+        <file>UiTextUrl.qml</file>
     </qresource>
 </RCC>

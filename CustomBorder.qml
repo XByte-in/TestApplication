@@ -12,7 +12,7 @@ import QtQuick.Window 2.15
 
 Rectangle
 {
-    property bool commonBorder : true
+    property bool commonBorder : false
 
     property int lBorderwidth : 1
     property int rBorderwidth : 1

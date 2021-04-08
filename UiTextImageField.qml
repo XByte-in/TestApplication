@@ -9,6 +9,7 @@ UiTextField {
     signal clicked
 
     readOnly: pReadOnly
+    rightPadding: pTextFieldProperties.imageWidth + 2*pTextFieldProperties.rightPadding
 
     background: Rectangle {
         color: readOnly ? "transparent"  : iControl.pColorState.background
@@ -16,7 +17,8 @@ UiTextField {
         border.color: pTextFieldProperties.borderColor
     }
 
-    UiImageButton {        
+    UiImageButton {
+        id: iImage
         UiToolTip.text: qsTranslate("QObject", "Save")
         anchors { verticalCenter: parent.verticalCenter ; right: parent.right;}
         anchors.rightMargin: pTextFieldProperties.rightPadding

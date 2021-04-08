@@ -18,7 +18,6 @@ Button {
     property string extn: ".svg"
     property var pMouseCursor
     property bool pImageAnimationRunning: false
-    property bool pImageCache: true
 
     horizontalPadding: 0
     verticalPadding: 0
@@ -44,7 +43,6 @@ Button {
         extn: iControl.extn
         width: iControl.availableWidth
         height: iControl.availableHeight
-        cache: iControl.pImageCache
         RotationAnimation on rotation {
             loops: Animation.Infinite
             duration: 1000

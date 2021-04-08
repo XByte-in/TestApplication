@@ -34,16 +34,24 @@ SpinBox {
     }
     contentItem: TextInput {
         id: spinboxTextInput
-        text: control.textFromValue(control.value, control.locale)
+        Component.onCompleted: {
+            text= control.textFromValue(control.value, control.locale)
+        }
         color: UiTheme.colors.primary10
         font.family: "Segoe UI"
         readOnly: !control.editable
+        anchors.left: parent.left
+        anchors.top: parent.top
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.rightMargin: 34
-        anchors.bottomMargin: 4
+        anchors.rightMargin: 20
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
         validator: control.validator
         inputMethodHints: control.inputMethodHints
+        onTextChanged:  {
+            value = control.valueFromText(text, control.locale)
+        }
     }
 
     up.indicator: Rectangle {
@@ -59,7 +67,10 @@ SpinBox {
             height: 10
             width: 8
             anchors.centerIn: parent
-            onClicked: increase()
+            onClicked: {
+                increase()
+                spinboxTextInput.text= control.textFromValue(control.value, control.locale)
+            }
         }
     }
 
@@ -76,7 +87,10 @@ SpinBox {
             height: 10
             width: 8
             anchors.centerIn: parent
-            onClicked: decrease()
+            onClicked: {
+                decrease()
+                spinboxTextInput.text= control.textFromValue(control.value, control.locale)
+            }
         }
     }
 

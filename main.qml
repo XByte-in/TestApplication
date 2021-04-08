@@ -18,24 +18,14 @@ ApplicationWindow {
     height: 360 + 2* iShadow.shadowThickness
     visible: true
 
-
-
-    //Component.onCompleted: {iToast.fShow("Testng my toast", 1000000)}
-
     UiShadowContainer{
         id:iShadow
         Rectangle { anchors.fill: parent; color:UiTheme.colors.primary80 }
 
-        UiToast{
-            id: iToast
-            visible: true
-            pShowCross: true
-        }
-
-        Rectangle {
-            height: 300
-            width: 1
-            anchors.centerIn: parent
+        UiComboBox {
+            width: 200
+            model: [1,2,3,4,5]
+            pSize: UiTheme.comboBoxes.sizes.medium
         }
     }
 }

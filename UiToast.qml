@@ -23,8 +23,8 @@ UiRowLayout {
 
     color: UiTheme.colors.overLayBlack
 
-    x: parent.x + parent.width/2 - implicitWidth/2 - 15
-    y: parent.y + 20
+    x: parent.x + parent.width/2 - implicitWidth/2
+    y: parent.y + parent.height/2 - implicitHeight/2
 
     leftPadding: 10
     rightPadding: 10
