@@ -416,5 +416,6 @@
         <file>UiScrollBar.qml</file>
         <file>UiScrollView.qml</file>
         <file>UiText.qml</file>
+        <file>MainTopbar.qml</file>
     </qresource>
 </RCC>
