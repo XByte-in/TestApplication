@@ -1,4 +1,5 @@
 QT += quick
+QT += core
 
 CONFIG += c++11
 
@@ -12,7 +13,8 @@ SOURCES += \
         UiTheme.cpp \
         UiToolTip.cpp \
         directoryvalidator.cpp \
-        main.cpp
+        main.cpp \
+        mainbackend.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +34,5 @@ HEADERS += \
     UiDialogButtonModelList.h \
     UiTheme.h \
     UiToolTip.h \
-    directoryvalidator.h
+    directoryvalidator.h \
+    mainbackend.h

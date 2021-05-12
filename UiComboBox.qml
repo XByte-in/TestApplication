@@ -35,6 +35,8 @@ ComboBox {
             anchors.centerIn: parent
             width: iControl.pSize.indicatorImageWidth
             height: iControl.pSize.indicatorImageHeight
+            sourceSize.width: iControl.pSize.indicatorImageWidth
+            sourceSize.height: iControl.pSize.indicatorImageHeight
             asset: iControl.pSize.indicatorAsset + (iControl.hovered ? "_hover" : "")
         }
     }
@@ -103,8 +105,6 @@ ComboBox {
                 color: "transparent"
                 border.width: 1
                 border.color: iControl.pColor.normal.border
-
-               anchors.topMargin: -1
             }
 
             ScrollIndicator.vertical: ScrollIndicator { }

@@ -12,12 +12,13 @@
 #include <dxgi.h>
 #include <d3d11.h>
 #include "qsgrendererinterface.h"
-
+#include <QElapsedTimer>
 #include "directoryvalidator.h"
 #include "UiToolTip.h"
 #include "UiTheme.h"
 #include "UiDialogButtonModel.h"
 #include "UiDialogButtonModelList.h"
+#include "mainbackend.h"
 
 #define getQObject(a, b) qvariant_cast<QObject*>(a->property(b))
 
@@ -90,6 +91,17 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine* engine = new QQmlApplicationEngine;
     engine->rootContext()->setContextProperty("UiTheme", UiTheme::instance());
+
+    MainBackend* mainBackend = new MainBackend;
+    engine->rootContext()->setContextProperty("mainBackend", mainBackend);
     engine->load(QUrl("qrc:/main.qml"));
+
+
+
+
+    QObject* qmlRoot = engine->rootObjects().first();
+    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
+
+    QMetaObject::invokeMethod(mainWindow, "fSetTitle");
     return app.exec();
 }

@@ -412,7 +412,9 @@
         <file>qrcAssets/VerySmallSettings_click.svg</file>
         <file>qrcAssets/VerySmallSettings_hover.svg</file>
         <file>qrcAssets/Zoom.svg</file>
-        <file>CustomBorder.qml</file>
         <file>UiTextUrl.qml</file>
+        <file>UiScrollBar.qml</file>
+        <file>UiScrollView.qml</file>
+        <file>UiText.qml</file>
     </qresource>
 </RCC>

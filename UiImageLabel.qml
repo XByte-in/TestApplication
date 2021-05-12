@@ -43,6 +43,8 @@ Control {
             asset: iControl.pImageAsset + (iControl.pHovered ? "_hover" : "")
             width: iControl.pSize.imageWidth
             height: iControl.pSize.imageHeight
+            sourceSize.height: iControl.pSize.imageHeight
+            sourceSize.width: iControl.pSize.imageWidth
         }
         Text {
             Layout.fillWidth: true

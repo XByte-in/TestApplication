@@ -15,35 +15,35 @@ import QtQuick.Shapes 1.12
 
 UiRowLayout {
     id: iToastRow
+
     readonly property real pDefaultTime: 3000
     property real pTime: pDefaultTime
     readonly property real pFadeTime: 300
     property real pMargin: 8
     property bool pShowCross: true
+    property real pMaximumWidth: Screen.desktopAvailableWidth * Screen.devicePixelRatio
 
     color: UiTheme.colors.overLayBlack
-
-    x: parent.x + parent.width/2 - implicitWidth/2
-    y: parent.y + parent.height/2 - implicitHeight/2
-
     leftPadding: 10
     rightPadding: 10
     topPadding: 5
     bottomPadding: 5
-
     spacing: 10
-
     visible: false
     Text {
         id: iMessage
+        Layout.maximumWidth: (iToastRow.width > pMaximumWidth ? iToastRow.width : pMaximumWidth) - 20 - (pShowCross ? 24 : 0)
         color: UiTheme.colors.secondaryHover
         font: UiTheme.fonts.bodySmall
-        wrapMode: Text.Wrap
+        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+        horizontalAlignment: Qt.AlignHCenter
     }
     UiImageButton {
         asset: "CloseIcon"
         width: 16
         height: 16
+        pSourceWidth: 16
+        pSourceHeight: 16
         visible: pShowCross
         onClicked: {
             iCloseAnimation.start()
@@ -88,7 +88,6 @@ UiRowLayout {
                 iToastRow.visible = false
         }
     }
-
 
     function fShow(text, duration) {
         iMessage.text = text;

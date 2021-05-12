@@ -34,9 +34,7 @@ SpinBox {
     }
     contentItem: TextInput {
         id: spinboxTextInput
-        Component.onCompleted: {
-            text= control.textFromValue(control.value, control.locale)
-        }
+        text: control.textFromValue(control.value, control.locale)
         color: UiTheme.colors.primary10
         font.family: "Segoe UI"
         readOnly: !control.editable
@@ -50,7 +48,8 @@ SpinBox {
         validator: control.validator
         inputMethodHints: control.inputMethodHints
         onTextChanged:  {
-            value = control.valueFromText(text, control.locale)
+            if(focus)
+                value = control.valueFromText(text, control.locale)
         }
     }
 
@@ -66,6 +65,8 @@ SpinBox {
             asset: "UpArrow"
             height: 10
             width: 8
+            pSourceHeight: 10
+            pSourceWidth: 8
             anchors.centerIn: parent
             onClicked: {
                 increase()
@@ -86,6 +87,8 @@ SpinBox {
             asset: "DownArrow"
             height: 10
             width: 8
+            pSourceHeight: 10
+            pSourceWidth: 8
             anchors.centerIn: parent
             onClicked: {
                 decrease()

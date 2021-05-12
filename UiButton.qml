@@ -45,6 +45,8 @@ Button {
             visible: asset != ""
             Layout.preferredWidth: iControl.pSize.iconWidth
             Layout.preferredHeight: iControl.pSize.iconHeight
+            sourceSize.width: (iControl.extn === ".svg") ? iControl.pSize.iconWidth : undefined
+            sourceSize.height: (iControl.extn === ".svg") ? iControl.pSize.iconHeight : undefined
         }
         Text {
             Layout.fillWidth: true

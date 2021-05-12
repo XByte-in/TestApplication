@@ -3,29 +3,187 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
+import QtQuick.Controls 1.4
 
 import DirValidator 1.0
 import DialogButtonModel 1.0
 import DialogButtonModelList 1.0
 import UiToolTipControl 1.0
 
+
 ApplicationWindow {
-    id: appwin
+    id: iAppwin
     color: "transparent"
-    flags: Qt.Window | Qt.FramelessWindowHint
+    //flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
     title: qsTranslate("QObject", "Test Application")
-    width: 540 + 2* iShadow.shadowThickness
-    height: 360 + 2* iShadow.shadowThickness
+
+    width: 500 + 2* iShadow.shadowThickness
+    height: 300 + 2* iShadow.shadowThickness
     visible: true
 
     UiShadowContainer{
         id:iShadow
         Rectangle { anchors.fill: parent; color:UiTheme.colors.primary80 }
 
-        UiComboBox {
-            width: 200
-            model: [1,2,3,4,5]
-            pSize: UiTheme.comboBoxes.sizes.medium
+        UiColumnLayout {
+            anchors.fill: parent
+            UiRowLayout {
+                Layout.alignment: Qt.AlignTop
+                id: iTopbarRow
+                Layout.preferredHeight: 32
+                Layout.fillWidth: true
+                spacing: 0
+                color: UiTheme.colors.primary60
+
+                UiImage {
+                    id: iProductLogo
+                    extn: ".png"
+                    asset: "BlueStacks5Beta"
+                    Layout.leftMargin: 8
+                    Layout.rightMargin: 8
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
+                }
+
+                Text {
+                    id: iBstTxt
+                    text: "Bluestacks"
+                    Layout.fillHeight: true
+                    color: UiTheme.colors.primary10
+                    font: UiTheme.fonts.bodyMedium
+                    Layout.leftMargin: 4
+                    fontSizeMode: Text.Fit
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Text {
+                    id: iVersionTxt
+                    text: "5.1.0.100"
+                    Layout.fillHeight: true
+                    color: UiTheme.colors.primary10
+                    font: UiTheme.fonts.bodyExtraSmall
+                    fontSizeMode: Text.Fit
+                    Layout.leftMargin: 4
+                    opacity: 0.7
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                Text {
+                    id: iImageTxt
+                    text: ""
+                    Layout.fillHeight: true
+                    color: UiTheme.colors.primary10
+                    font: UiTheme.fonts.bodyExtraSmall
+                    fontSizeMode: Text.Fit
+                    Layout.leftMargin: 4
+                    opacity: 0.7
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                UiImageButton {
+                    id: iHomeBtn
+                    Layout.leftMargin: 8
+                    asset: "SidebarHome"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Home")
+                }
+                UiImageButton {
+                    id: iRecentBtn
+                    asset: "SidebarRecents"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Recent apps")
+                }
+
+                Item {
+                    Layout.fillWidth: true
+                }
+
+
+                Item {
+                    Layout.fillWidth: true
+                }
+                UiImageButton {
+                    id: iRawModeWarningBtn
+                    visible: false
+                    asset: "TitlebarError"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                }
+
+                UiImageButton {
+                    id: iHelpBtn
+                    asset: "TitlebarHelp"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Help and support")
+                }
+                UiImageButton {
+                    id: iCfgBtn
+                    asset: "TitlebarMenu"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Menu")
+                }
+                UiImageButton {
+                    asset: "TitlebarMinimize"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Minimize")
+                }
+                UiImageButton {
+                    asset: "TitlebarMaximize"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    visible: iAppwin.visibility === ApplicationWindow.Windowed
+                    UiToolTip.text: qsTranslate("QObject", "Maximize")
+                }
+                UiImageButton {
+                    asset: "TitlebarRestore"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    visible: iAppwin.visibility === ApplicationWindow.Maximized
+                    UiToolTip.text: qsTranslate("QObject", "Restore")
+                }
+                UiImageButton {
+                    asset: "TitlebarClose"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Close")
+                    onClicked: iAppwin.close()
+                }
+                UiImageButton {
+                    id: iSidebarShowBtn
+                    asset: "TitlebarExpand"
+                    Layout.preferredWidth: 32
+                    Layout.preferredHeight: 32
+                    pSourceHeight: 32
+                    pSourceWidth: 32
+                    UiToolTip.text: qsTranslate("QObject", "Open sidebar")
+                }
+            }
         }
     }
 }

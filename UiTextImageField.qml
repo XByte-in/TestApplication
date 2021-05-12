@@ -23,8 +23,10 @@ UiTextField {
         anchors { verticalCenter: parent.verticalCenter ; right: parent.right;}
         anchors.rightMargin: pTextFieldProperties.rightPadding
         asset: iControl.pAsset
-        height: pTextFieldProperties.imageWidth
-        width: pTextFieldProperties.imageHeight
+        height: pTextFieldProperties.imageHeight
+        width: pTextFieldProperties.imageWidth
+        pSourceWidth: pTextFieldProperties.imageWidth
+        pSourceHeight: pTextFieldProperties.imageHeight
         visible: !iControl.readOnly
         onClicked: {
             pReadOnly = true

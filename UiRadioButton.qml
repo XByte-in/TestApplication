@@ -23,6 +23,8 @@ RadioButton {
         y: iControl.topPadding + (iControl.availableHeight/iContent.lineCount - height) / 2
         width: iControl.pSize.iconWidth
         height: iControl.pSize.iconHeight
+        sourceSize.height: iControl.pSize.iconHeight
+        sourceSize.width: iControl.pSize.iconWidth
         asset: iControl.pSize.iconAsset + (iControl.checked ? "On" : "Off") + (iControl.hovered? "_hover" : "")
     }
 

@@ -19,6 +19,9 @@ Button {
     property var pMouseCursor
     property bool pImageAnimationRunning: false
 
+    property var pSourceWidth : undefined
+    property var pSourceHeight : undefined
+
     horizontalPadding: 0
     verticalPadding: 0
     spacing: 0
@@ -43,6 +46,9 @@ Button {
         extn: iControl.extn
         width: iControl.availableWidth
         height: iControl.availableHeight
+        sourceSize.width: iControl.pSourceWidth
+        sourceSize.height: iControl.pSourceHeight
+
         RotationAnimation on rotation {
             loops: Animation.Infinite
             duration: 1000

@@ -9,22 +9,20 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Window 2.15
+import QtQuick.Shapes 1.12
+
 import UiToolTipControl 1.0
 
-Image {
-    property string asset
-    property string extn: ".svg"
-    source: asset === "" ? "" : "qrcAssets/" + asset + extn
-    fillMode: Image.PreserveAspectFit
-    antialiasing: true
-    cache: true
-    mipmap: true
-    opacity: enabled ? 1 : 0.5
-}
+Text {
+    id: iControl
+    elide: Text.ElideRight
+    UiToolTip.text: text
+    UiToolTip.visible: iMouseArea.containsMouse && truncated
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
+    MouseArea {
+        id: iMouseArea
+        anchors.fill: parent
+        hoverEnabled: true
+    }
 }
-##^##*/
-

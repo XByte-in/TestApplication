@@ -75,6 +75,8 @@ Dialog {
                 asset: pDialogImageSource
                 Layout.preferredWidth: iControl.pSize.iconWidth
                 Layout.preferredHeight: iControl.pSize.iconHeight
+                sourceSize.width: iControl.pSize.iconWidth
+                sourceSize.height: iControl.pSize.iconHeight
             }
             Text {
                 visible: iControl.pDialogType === UiDialog.DialogTypes.SimpleNarrow
@@ -92,6 +94,8 @@ Dialog {
                 asset: "CloseIcon"
                 Layout.preferredHeight: 16
                 Layout.preferredWidth: 16
+                pSourceHeight: 16
+                pSourceWidth: 16
                 Layout.alignment: Qt.AlignRight
                 onClicked: {
                     iControl.closeClicked()
@@ -103,6 +107,8 @@ Dialog {
             asset: pDialogImageSource
             Layout.preferredWidth: iControl.pSize.iconWidth
             Layout.preferredHeight: iControl.pSize.iconHeight
+            sourceSize.width: iControl.pSize.iconWidth
+            sourceSize.height: iControl.pSize.iconHeight
             Layout.alignment: Qt.AlignHCenter
         }
     }
@@ -114,6 +120,8 @@ Dialog {
             asset: pDialogImageSource
             Layout.preferredWidth: iControl.pSize.iconWidth
             Layout.preferredHeight: iControl.pSize.iconHeight
+            sourceSize.width: iControl.pSize.iconWidth
+            sourceSize.height: iControl.pSize.iconHeight
             Layout.alignment: Qt.AlignTop
         }
         UiColumnLayout {
