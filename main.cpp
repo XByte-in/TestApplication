@@ -1,3 +1,4 @@
+#include <QScreen>
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QLoggingCategory>
@@ -103,5 +104,11 @@ int main(int argc, char *argv[])
     QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
 
     QMetaObject::invokeMethod(mainWindow, "fSetTitle");
+
+    QScreen* screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->availableGeometry();
+
+    qInfo()<<screenGeometry.width();
+    qInfo()<<screenGeometry.height();
     return app.exec();
 }

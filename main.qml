@@ -14,10 +14,10 @@ import UiToolTipControl 1.0
 ApplicationWindow {
     id: iAppwin
     color: "transparent"
-    //flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
     title: qsTranslate("QObject", "Test Application")
 
-    width: 800 + 2* iShadow.shadowThickness
+    width: 500 + 2* iShadow.shadowThickness
     height: 300 + 2* iShadow.shadowThickness
     visible: true
 
@@ -25,14 +25,52 @@ ApplicationWindow {
         id:iShadow
         Rectangle { anchors.fill: parent; color:UiTheme.colors.primary80 }
 
-        UiColumnLayout {
+        ListModel {
+            id: myModel
+            ListElement { text: "1" }
+            ListElement { text: "2" }
+            ListElement { text: "3" }
+            ListElement { text: "4" }
+            ListElement { text: "5" }
+            ListElement { text: "6" }
+            ListElement { text: "7" }
+        }
+
+        Item {
+            id: mainContent
             anchors.fill: parent
-            MainTopbar {
-                Layout.alignment: Qt.AlignTop
-                id: iTopbar
-                color: UiTheme.colors.primary60
-                Layout.fillWidth: true
-                Layout.preferredHeight: 32
+
+            ScrollView {
+                anchors.fill: parent
+                ListView {
+                    id: listView
+                    model: myModel
+                    delegate: DraggableItem {
+                        Rectangle {
+                            height: 40
+                            width: 40
+                            color: "white"
+
+                            Text {
+                                id: textLabel
+                                anchors.centerIn: parent
+                                text: model.text
+                            }
+                            Rectangle {
+                                anchors {
+                                    left: parent.left
+                                    right: parent.right
+                                    bottom: parent.bottom
+                                }
+                                height: 1
+                                color: "lightgrey"
+                            }
+                        }
+
+                        draggedItemParent: mainContent
+                        onMoveItemRequested: myModel.move(from, to, 1)
+                    }
+                }
             }
         }
     }
