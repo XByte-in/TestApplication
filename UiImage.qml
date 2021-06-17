@@ -14,6 +14,11 @@ import UiToolTipControl 1.0
 Image {
     property string asset
     property string extn: ".svg"
+    property int pImageWidth : 0
+    property int pImageHeight : 0
+
+    sourceSize.width: pImageWidth
+    sourceSize.height: pImageHeight
     source: asset === "" ? "" : "qrcAssets/" + asset + extn
     fillMode: Image.PreserveAspectFit
     antialiasing: true
@@ -21,10 +26,3 @@ Image {
     mipmap: true
     opacity: enabled ? 1 : 0.5
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
-

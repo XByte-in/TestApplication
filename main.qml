@@ -4,73 +4,62 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
 import QtQuick.Controls 1.4
-
 import DirValidator 1.0
 import DialogButtonModel 1.0
 import DialogButtonModelList 1.0
 import UiToolTipControl 1.0
-
-
 ApplicationWindow {
     id: iAppwin
-    color: "transparent"
+    width: 500
+    height: 300
+    x: Screen.width / 2 - width / 2
+    y : Screen.height / 2 - height / 2
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
-    title: qsTranslate("QObject", "Test Application")
-
-    width: 500 + 2* iShadow.shadowThickness
-    height: 300 + 2* iShadow.shadowThickness
+    color: UiTheme.colors.primary80
     visible: true
-
-    UiShadowContainer{
-        id:iShadow
-        Rectangle { anchors.fill: parent; color:UiTheme.colors.primary80 }
-
-        ListModel {
-            id: myModel
-            ListElement { text: "1" }
-            ListElement { text: "2" }
-            ListElement { text: "3" }
-            ListElement { text: "4" }
-            ListElement { text: "5" }
-            ListElement { text: "6" }
-            ListElement { text: "7" }
-        }
-
-        Item {
-            id: mainContent
+    Rectangle {
+        anchors.fill: parent
+        color: "transparent"
+        border { color: UiTheme.colors.primary60; width: 1 }
+        UiColumnLayout {
             anchors.fill: parent
-
-            ScrollView {
-                anchors.fill: parent
-                ListView {
-                    id: listView
-                    model: myModel
-                    delegate: DraggableItem {
-                        Rectangle {
-                            height: 40
-                            width: 40
-                            color: "white"
-
-                            Text {
-                                id: textLabel
-                                anchors.centerIn: parent
-                                text: model.text
-                            }
-                            Rectangle {
-                                anchors {
-                                    left: parent.left
-                                    right: parent.right
-                                    bottom: parent.bottom
-                                }
-                                height: 1
-                                color: "lightgrey"
-                            }
-                        }
-
-                        draggedItemParent: mainContent
-                        onMoveItemRequested: myModel.move(from, to, 1)
-                    }
+            anchors.margins: 1
+            UiRowLayout {
+                id: iTopbarRow
+                Layout.fillWidth: true
+                Layout.preferredHeight: 32
+                spacing: 0
+                color: UiTheme.colors.primary60
+                Text {
+                    id: iBstTxt
+                    text: "Test App"
+                    Layout.fillHeight: true
+                    color: UiTheme.colors.primary10
+                    font: UiTheme.fonts.bodyMedium
+                    Layout.leftMargin: 12
+                    fontSizeMode: Text.Fit
+                    horizontalAlignment: Text.AlignLeft
+                    verticalAlignment: Text.AlignVCenter
                 }
+                MouseArea {
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                    onPositionChanged: iAppwin.startSystemMove()
+                }
+                UiImageButton {
+                    id:iCloseBtn
+                    asset: "TitlebarClose"
+                    pImageWidth: 32
+                    pImageHeight: 32
+                    Layout.alignment: Qt.AlignRight
+                    UiToolTip.text: qsTranslate("QObject", "Close")
+                    onClicked: iAppwin.close()
+                }
+            }
+            Rectangle {
+                id: iTestArea
+                Layout.fillHeight: true
+                border { color: UiTheme.colors.primary60 ; width: 1 }
             }
         }
     }

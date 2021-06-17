@@ -63,10 +63,8 @@ SpinBox {
         border.color: UiTheme.colors.primary60
         UiImageButton {
             asset: "UpArrow"
-            height: 10
-            width: 8
-            pSourceHeight: 10
-            pSourceWidth: 8
+            pImageWidth: 8
+            pImageHeight: 10
             anchors.centerIn: parent
             onClicked: {
                 increase()
@@ -85,10 +83,8 @@ SpinBox {
         border.color: UiTheme.colors.primary60
         UiImageButton {
             asset: "DownArrow"
-            height: 10
-            width: 8
-            pSourceHeight: 10
-            pSourceWidth: 8
+            pImageWidth: 8
+            pImageHeight: 10
             anchors.centerIn: parent
             onClicked: {
                 decrease()

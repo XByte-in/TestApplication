@@ -418,5 +418,35 @@
         <file>UiText.qml</file>
         <file>MainTopbar.qml</file>
         <file>DraggableItem.qml</file>
+        <file>UiDialogButtonModel.cpp</file>
+        <file>UiDialogButtonModel.h</file>
+        <file>UiDialogButtonModelList.cpp</file>
+        <file>UiDialogButtonModelList.h</file>
+        <file>UiHelpPopup.qml</file>
+        <file>qrcAssets/BlueStacksCursor.svg</file>
+        <file>qrcAssets/MacroPlay_hover_1.svg</file>
+        <file>qrcAssets/MacroPlay_hover_2.svg</file>
+        <file>qrcAssets/MacroPlay_hover_3.svg</file>
+        <file>qrcAssets/MacroPlay_hover_4.svg</file>
+        <file>qrcAssets/SidebarShake.svg</file>
+        <file>qrcAssets/SidebarShake_click.svg</file>
+        <file>qrcAssets/SidebarShake_hover.svg</file>
+        <file>qrcAssets/SidebarSync.svg</file>
+        <file>qrcAssets/SidebarSync_click.svg</file>
+        <file>qrcAssets/SidebarSync_hover.svg</file>
+        <file>qrcAssets/SidebarSyncActive.svg</file>
+        <file>qrcAssets/SidebarSyncActive_click.svg</file>
+        <file>qrcAssets/SidebarSyncActive_hover.svg</file>
+        <file>qrcAssets/Sync.svg</file>
+        <file>qrcAssets/SyncColor.svg</file>
+        <file>qrcAssets/SyncPlay_hover.svg</file>
+        <file>qrcAssets/SyncPlay_hover_1.svg</file>
+        <file>qrcAssets/SyncPlay_hover_2.svg</file>
+        <file>qrcAssets/SyncSimple.svg</file>
+        <file>qrcAssets/SystemCursor.svg</file>
+        <file>qrcAssets/TopbarReloadActive.svg</file>
+        <file>qrcAssets/TopbarReloadActive_click.svg</file>
+        <file>qrcAssets/TopbarReloadActive_hover.svg</file>
+        <file>qrcAssets/WarningIconYellow.svg</file>
     </qresource>
 </RCC>

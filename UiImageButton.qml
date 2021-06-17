@@ -18,9 +18,8 @@ Button {
     property string extn: ".svg"
     property var pMouseCursor
     property bool pImageAnimationRunning: false
-
-    property var pSourceWidth : undefined
-    property var pSourceHeight : undefined
+    property int pImageWidth : 0
+    property int pImageHeight : 0
 
     horizontalPadding: 0
     verticalPadding: 0
@@ -44,10 +43,8 @@ Button {
         asset: iControl.pImageAnimationRunning ? "SidebarLoader_white"
                                                : iControl.asset + (iControl.down ? "_click" : (iControl.hovered ? "_hover" : ""))
         extn: iControl.extn
-        width: iControl.availableWidth
-        height: iControl.availableHeight
-        sourceSize.width: iControl.pSourceWidth
-        sourceSize.height: iControl.pSourceHeight
+        pImageWidth: iControl.pImageWidth
+        pImageHeight: iControl.pImageHeight
 
         RotationAnimation on rotation {
             loops: Animation.Infinite
@@ -68,9 +65,3 @@ Button {
         }
     }
 }
-
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/

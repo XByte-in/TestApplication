@@ -12,11 +12,27 @@ import QtQuick.Window 2.15
 
 Window {
     property string toolTipText: ""
+    property string confShortcutProperty: ""
+    property string shortcutText: ""
+
     id: mainWindow
     width: toolTipTextBox.width + 10 + 2 * toolTipShadowContainer.shadowThickness
     height: toolTipTextBox.height + 10 + 2 * toolTipShadowContainer.shadowThickness
     color: "transparent"
     flags: Qt.ToolTip | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.NoFocus
+
+    onConfShortcutPropertyChanged: {
+        if (confShortcutProperty === "") {
+            return
+        }
+
+        var shortcut = plrBackend.getDisplayComboFromNameCombo(uiBackend.confGetString("bst.shortcut." + confShortcutProperty))
+        if (shortcut === "") {
+            return
+        }
+
+        shortcutText = "\n(%1)".arg(shortcut)
+    }
 
     UiShadowContainer{
         id: toolTipShadowContainer
@@ -32,7 +48,7 @@ Window {
                 id: toolTipTextBox
                 anchors.centerIn: parent
                 anchors.margins: 4
-                text: toolTipText
+                text: toolTipText + shortcutText
                 color: UiTheme.colors.primary10
                 font: UiTheme.fonts.bodyMedium
             }

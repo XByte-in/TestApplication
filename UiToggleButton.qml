@@ -28,13 +28,11 @@ Switch  {
     padding: 0
     spacing: pSize.spacing
     opacity: enabled ? 1 : 0.4
-    indicator: UiImage {
+    indicator: UiImageButton {
         x: iControl.text ? iControl.leftPadding : iControl.leftPadding + (iControl.availableWidth - width) / 2
         y: iControl.topPadding + (iControl.availableHeight - height) / 2
-        width: iControl.pSize.iconWidth
-        height: iControl.pSize.iconHeight
-        sourceSize.height: iControl.pSize.iconHeight
-        sourceSize.width: iControl.pSize.iconWidth
+        pImageWidth: iControl.pSize.iconWidth
+        pImageHeight: iControl.pSize.iconHeight
         asset: iControl.pSize.iconAsset + (iControl.checked ? "On" : "Off") + (iControl.hovered? "_hover" : "")
         UiToolTip.text: imageToolTip
     }

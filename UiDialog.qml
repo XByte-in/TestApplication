@@ -73,10 +73,8 @@ Dialog {
                 visible: pDialogImageSource != ""
                          && (iControl.pDialogType === UiDialog.DialogTypes.Simple || iControl.pDialogType === UiDialog.DialogTypes.SimpleNarrow)
                 asset: pDialogImageSource
-                Layout.preferredWidth: iControl.pSize.iconWidth
-                Layout.preferredHeight: iControl.pSize.iconHeight
-                sourceSize.width: iControl.pSize.iconWidth
-                sourceSize.height: iControl.pSize.iconHeight
+                pImageWidth: iControl.pSize.iconWidth
+                pImageHeight: iControl.pSize.iconHeight
             }
             Text {
                 visible: iControl.pDialogType === UiDialog.DialogTypes.SimpleNarrow
@@ -92,10 +90,8 @@ Dialog {
             UiImageButton {
                 visible: iControl.pCloseBtnVisible
                 asset: "CloseIcon"
-                Layout.preferredHeight: 16
-                Layout.preferredWidth: 16
-                pSourceHeight: 16
-                pSourceWidth: 16
+                pImageWidth: 16
+                pImageHeight: 16
                 Layout.alignment: Qt.AlignRight
                 onClicked: {
                     iControl.closeClicked()
@@ -105,10 +101,8 @@ Dialog {
         UiImage {
             visible: pDialogImageSource != "" && iControl.pDialogType === UiDialog.DialogTypes.Tall
             asset: pDialogImageSource
-            Layout.preferredWidth: iControl.pSize.iconWidth
-            Layout.preferredHeight: iControl.pSize.iconHeight
-            sourceSize.width: iControl.pSize.iconWidth
-            sourceSize.height: iControl.pSize.iconHeight
+            pImageWidth: iControl.pSize.iconWidth
+            pImageHeight: iControl.pSize.iconHeight
             Layout.alignment: Qt.AlignHCenter
         }
     }
@@ -118,10 +112,8 @@ Dialog {
         UiImage {
             visible: pDialogImageSource != "" && iControl.pDialogType === UiDialog.DialogTypes.Descriptive
             asset: pDialogImageSource
-            Layout.preferredWidth: iControl.pSize.iconWidth
-            Layout.preferredHeight: iControl.pSize.iconHeight
-            sourceSize.width: iControl.pSize.iconWidth
-            sourceSize.height: iControl.pSize.iconHeight
+            pImageWidth: iControl.pSize.iconWidth
+            pImageHeight: iControl.pSize.iconHeight
             Layout.alignment: Qt.AlignTop
         }
         UiColumnLayout {

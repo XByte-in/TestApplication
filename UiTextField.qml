@@ -78,45 +78,24 @@ TextField {
 
     Component {
         id: errorComponent
-        UiWindowedPopup {
-            contentWidth: iErrorLayout.implicitWidth
-            contentHeight: 30
-            closeOnPressOutside: false
-            flags: Qt.Tool | Qt.FramelessWindowHint | Qt.NoFocus
-
+        UiHelpPopup {
             property string pErrorContent: ""
 
-            UiColumnLayout {
-                id: iErrorLayout
+            contentWidth: pInnerLayout.implicitWidth
+            contentHeight: 30
+            closeOnPressOutside: false
+            flags: Qt.Tool | Qt.FramelessWindowHint | Qt.WindowDoesNotAcceptFocus
+            pInnerLayout {
                 border.width: 1
                 border.color: UiTheme.colors.dangerNormal
                 color: UiTheme.colors.primary90
-                padding: 5
-                Text {
-                    text: pErrorContent
-                    font: UiTheme.fonts.bodyMedium
-                    color: UiTheme.colors.primary10
-                }
-            }
-            Shape {
-                width: 16
-                height: 8
-                anchors.top: iErrorLayout.bottom
-                anchors.left: iErrorLayout.horizontalCenter
-                anchors.topMargin: -1
-                ShapePath {
-                    strokeColor: UiTheme.colors.dangerNormal
-                    fillColor: UiTheme.colors.primary90
-                    startX: -8
-                    startY: 0
-                    PathLine {x: 0; y: 8}
-                    PathLine {x: 8; y: 0}
-                }
+                padding: 4
             }
 
-            onClosePopup: {
-                close()
-                destroy()
+            Text {
+                text: pErrorContent
+                font: UiTheme.fonts.bodyMedium
+                color: UiTheme.colors.primary10
             }
         }
     }

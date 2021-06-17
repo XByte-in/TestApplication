@@ -17,14 +17,13 @@ CheckBox {
 
     padding: 0
     spacing :pSize.spacing
+    opacity: enabled ? 1 : 0.4
 
     indicator: UiImage {
         x: iControl.text ? iControl.leftPadding : iControl.leftPadding + (iControl.availableWidth - width) / 2
         y: iControl.topPadding + (iControl.availableHeight / iContent.lineCount - height) / 2
-        width: iControl.pSize.iconWidth
-        height: iControl.pSize.iconHeight
-        sourceSize.width: iControl.pSize.iconWidth
-        sourceSize.height: iControl.pSize.iconHeight
+        pImageWidth: iControl.pSize.iconWidth
+        pImageHeight: iControl.pSize.iconHeight
         asset: iControl.pSize.iconAsset + (iControl.checked ? "On" : "Off") + (iControl.hovered? "_hover" : "")
     }
 

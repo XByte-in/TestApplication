@@ -11,17 +11,19 @@ import QtQuick 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
+    id: iControl
+
     default property alias pChildren: iRowLayout.data
 
     property alias pMouseArea: mouseArea
 
-    property alias leftPadding: iRowLayout.anchors.leftMargin
-    property alias topPadding: iRowLayout.anchors.topMargin
-    property alias rightPadding: iRowLayout.anchors.rightMargin
-    property alias bottomPadding: iRowLayout.anchors.bottomMargin
-    property alias padding: iRowLayout.anchors.margins
+    property real leftPadding: padding
+    property real topPadding: padding
+    property real rightPadding: padding
+    property real bottomPadding: padding
+    property real padding: 0
 
-    property alias spacing: iRowLayout.spacing
+    property real spacing: 0
 
     implicitWidth: iRowLayout.implicitWidth + leftPadding + rightPadding
     implicitHeight: iRowLayout.implicitHeight + topPadding + bottomPadding
@@ -34,11 +36,14 @@ Rectangle {
 
     RowLayout {
         id: iRowLayout
-        x: leftPadding
-        y: topPadding
-        width: parent.width - leftPadding - rightPadding
-        height: parent.height - topPadding - bottomPadding
-        anchors.margins: 0
-        spacing: 0
+        x: iControl.leftPadding
+        y: iControl.topPadding
+        width: parent.width - iControl.leftPadding - iControl.rightPadding
+        height: parent.height - iControl.topPadding - iControl.bottomPadding
+        anchors.leftMargin: iControl.leftPadding
+        anchors.rightMargin: iControl.rightPadding
+        anchors.topMargin: iControl.topPadding
+        anchors.bottomMargin: iControl.bottomPadding
+        spacing: iControl.spacing
     }
 }

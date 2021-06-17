@@ -15,6 +15,8 @@ import QtQuick.Shapes 1.12
 import UiToolTipControl 1.0
 
 Text {
+    property alias pMouseArea: iMouseArea
+
     id: iControl
     elide: Text.ElideRight
     UiToolTip.text: text

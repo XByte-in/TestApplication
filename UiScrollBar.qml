@@ -1,35 +1,37 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
+/*
+ * Copyright (C) 2020-2021 BlueStack Systems, Inc.
+ * All Rights Reserved
+ *
+ * THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF BLUESTACK SYSTEMS, INC.
+ * The copyright notice above does not evidence any actual or intended
+ * publication of such source code.
+ */
+
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
 ScrollBar {
-    id: control
+    id: iControl
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    padding: 2
-    visible: control.policy !== T.ScrollBar.AlwaysOff
+    padding: 0
+    visible: policy !== ScrollBar.AlwaysOff
     minimumSize: orientation == Qt.Horizontal ? height / width : width / height
 
+    background: Rectangle {
+        color: iControl.policy === ScrollBar.AlwaysOn || (iControl.policy === ScrollBar.AsNeeded && (iControl.hovered || iControl.active))
+               ? UiTheme.colors.primary90 : "transparent"
+    }
+
     contentItem: Rectangle {
-        implicitWidth: control.interactive ? 6 : 2
-        implicitHeight: control.interactive ? 6 : 2
-        color: UiTheme.colors.primary40
-        opacity: 0.0
-        states: State {
-            name: "active"
-            when: control.policy === T.ScrollBar.AlwaysOn || (control.active && control.size < 1.0)
-            PropertyChanges { target: control.contentItem; opacity: 0.75 }
-        }
-        transitions: Transition {
-            from: "active"
-            SequentialAnimation {
-                PauseAnimation { duration: 450 }
-                NumberAnimation { target: control.contentItem; duration: 200; property: "opacity"; to: 0.0 }
-            }
-        }
+        implicitWidth: 8
+        implicitHeight: 8
+        color: iControl.policy === ScrollBar.AlwaysOn || (iControl.policy === ScrollBar.AsNeeded && (iControl.hovered || iControl.active))
+               ? UiTheme.colors.primary50 : "transparent"
+        opacity: iControl.hovered ? 1 : 0.6
     }
 }

@@ -40,10 +40,8 @@ UiRowLayout {
     }
     UiImageButton {
         asset: "CloseIcon"
-        width: 16
-        height: 16
-        pSourceWidth: 16
-        pSourceHeight: 16
+        pImageWidth: 16
+        pImageHeight: 16
         visible: pShowCross
         onClicked: {
             iCloseAnimation.start()

@@ -50,86 +50,87 @@ QtObject {
     }
 
     property QtObject fonts: QtObject {
-        property FontLoader normalFont: FontLoader { source: "fonts/Rubik-Regular.ttf" }
-        property FontLoader mediumFont: FontLoader { source: "fonts/Rubik-Medium.ttf" }
-
         property font titleExtraLarge: Qt.font({
-                                                   "family": mediumFont.name,
-                                                   "weight": Font.Medium,
+                                                   "family": "Rubik",
+                                                   "styleName": "Medium",
                                                    "pixelSize": 24
                                                })
         property font titleLarge: Qt.font({
-                                              "family": mediumFont.name,
-                                              "weight": Font.Medium,
+                                              "family": "Rubik",
+                                              "styleName": "Medium",
                                               "pixelSize": 18
                                           })
         property font titleMedium: Qt.font({
-                                               "family": mediumFont.name,
-                                               "weight": Font.Medium,
+                                               "family": "Rubik",
+                                               "styleName": "Medium",
                                                "pixelSize": 16
                                            })
         property font titleSmall: Qt.font({
-                                              "family": mediumFont.name,
-                                              "weight": Font.Medium,
+                                              "family": "Rubik",
+                                              "styleName": "Medium",
                                               "pixelSize": 14
                                           })
         property font titleExtraSmall: Qt.font({
-                                                   "family": mediumFont.name,
-                                                   "weight": Font.Medium,
+                                                   "family": "Rubik",
+                                                   "styleName": "Medium",
                                                    "pixelSize": 13
                                                })
         property font titleSmallest: Qt.font({
-                                                 "family": mediumFont.name,
-                                                 "weight": Font.Medium,
+                                                 "family": "Rubik",
+                                                 "styleName": "Medium",
                                                  "pixelSize": 12
                                              })
         property font bodyExtraLarge: Qt.font({
-                                                  "family": normalFont.name,
-                                                  "weight": Font.Normal,
+                                                  "family": "Rubik",
+                                                  "styleName": "Regular",
                                                   "pixelSize": 16
                                               })
         property font bodyLarge: Qt.font({
-                                             "family": normalFont.name,
-                                             "weight": Font.Normal,
+                                             "family": "Rubik",
+                                             "styleName": "Regular",
                                              "pixelSize": 14
                                          })
         property font bodyMedium: Qt.font({
-                                              "family": normalFont.name,
-                                              "weight": Font.Normal,
+                                              "family": "Rubik",
+                                              "styleName": "Regular",
                                               "pixelSize": 13
                                           })
         property font bodySmall: Qt.font({
-                                             "family": normalFont.name,
-                                             "weight": Font.Normal,
+                                             "family": "Rubik",
+                                             "styleName": "Regular",
                                              "pixelSize": 12
                                          })
         property font bodyExtraSmall: Qt.font({
-                                                  "family": normalFont.name,
-                                                  "weight": Font.Normal,
+                                                  "family": "Rubik",
+                                                  "styleName": "Regular",
                                                   "pixelSize": 11
                                               })
         property font bodySmallest: Qt.font({
-                                                "family": normalFont.name,
-                                                "weight": Font.Normal,
+                                                "family": "Rubik",
+                                                "styleName": "Regular",
                                                 "pixelSize": 10
                                             })
         property font overline: Qt.font({
-                                            "family": normalFont.name,
-                                            "weight": Font.Normal,
+                                            "family": "Rubik",
+                                            "styleName": "Regular",
                                             "pixelSize": 10,
                                             "capitalization": Font.AllUppercase,
                                             "letterSpacing": 0.1
                                         })
         property font buttonLarge: Qt.font({
-                                               "family": mediumFont.name,
-                                               "weight": Font.Medium,
+                                               "family": "Rubik",
+                                               "styleName": "Medium",
                                                "pixelSize": 20
                                            })
-        property font buttonMedium: titleMedium
+        property font buttonMedium: Qt.font({
+                                                "family": "Rubik",
+                                                "styleName": "Medium",
+                                                "pixelSize": 15
+                                            })
         property font buttonSmall: Qt.font({
-                                               "family": mediumFont.name,
-                                               "weight": Font.Medium,
-                                               "pixelSize": 12
+                                               "family": "Rubik",
+                                               "styleName": "Medium",
+                                               "pixelSize": 11
                                            })
     }
 

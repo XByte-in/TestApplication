@@ -1,9 +1,18 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
-import QtQuick.Templates 2.12 as T
-ScrollView {
-    id: control
+/*
+ * Copyright (C) 2020-2021 BlueStack Systems, Inc.
+ * All Rights Reserved
+ *
+ * THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF BLUESTACK SYSTEMS, INC.
+ * The copyright notice above does not evidence any actual or intended
+ * publication of such source code.
+ */
+
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Templates 2.15 as T
+
+T.ScrollView {
+    id: iControl
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             contentWidth + leftPadding + rightPadding)
@@ -11,18 +20,20 @@ ScrollView {
                              contentHeight + topPadding + bottomPadding)
 
     ScrollBar.vertical: UiScrollBar {
-        parent: control
-        x: control.mirrored ? 0 : control.width - width
-        y: control.topPadding
-        height: control.availableHeight
-        active: control.ScrollBar.horizontal.active
+        parent: iControl
+        x: iControl.width - width
+        y: iControl.topPadding
+        height: iControl.availableHeight
+        active: iControl.ScrollBar.vertical.active
+        policy: contentHeight > height && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 
     ScrollBar.horizontal: UiScrollBar {
-        parent: control
-        x: control.leftPadding
-        y: control.height - height
-        width: control.availableWidth
-        active: control.ScrollBar.vertical.active
+        parent: iControl
+        x: iControl.leftPadding
+        y: iControl.height - height
+        width: iControl.availableWidth
+        active: iControl.ScrollBar.horizontal.active
+        policy: contentWidth > width && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 }

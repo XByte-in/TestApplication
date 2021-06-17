@@ -33,10 +33,8 @@ ComboBox {
         color: iControl.contentItem.background.color
         UiImage {
             anchors.centerIn: parent
-            width: iControl.pSize.indicatorImageWidth
-            height: iControl.pSize.indicatorImageHeight
-            sourceSize.width: iControl.pSize.indicatorImageWidth
-            sourceSize.height: iControl.pSize.indicatorImageHeight
+            pImageWidth: iControl.pSize.indicatorImageWidth
+            pImageHeight: iControl.pSize.indicatorImageHeight
             asset: iControl.pSize.indicatorAsset + (iControl.hovered ? "_hover" : "")
         }
     }

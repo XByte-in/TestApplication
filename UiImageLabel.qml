@@ -41,18 +41,19 @@ Control {
         spacing: iControl.spacing
         UiImage {
             asset: iControl.pImageAsset + (iControl.pHovered ? "_hover" : "")
-            width: iControl.pSize.imageWidth
-            height: iControl.pSize.imageHeight
-            sourceSize.height: iControl.pSize.imageHeight
-            sourceSize.width: iControl.pSize.imageWidth
+            pImageWidth: iControl.pSize.imageWidth
+            pImageHeight: iControl.pSize.imageHeight
         }
         Text {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignLeft
+            verticalAlignment: Text.AlignVCenter
             text: iControl.pText
             font: iControl.font
             color: iControl.pHovered ? UiTheme.colors.primary10 : UiTheme.colors.primary20
             elide: Text.ElideRight
+            lineHeightMode: Text.FixedHeight
+            lineHeight: 16
         }
     }
 

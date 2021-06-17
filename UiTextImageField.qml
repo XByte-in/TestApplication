@@ -18,15 +18,13 @@ UiTextField {
     }
 
     UiImageButton {
-        id: iImage
         UiToolTip.text: qsTranslate("QObject", "Save")
-        anchors { verticalCenter: parent.verticalCenter ; right: parent.right;}
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.right: parent.right
         anchors.rightMargin: pTextFieldProperties.rightPadding
         asset: iControl.pAsset
-        height: pTextFieldProperties.imageHeight
-        width: pTextFieldProperties.imageWidth
-        pSourceWidth: pTextFieldProperties.imageWidth
-        pSourceHeight: pTextFieldProperties.imageHeight
+        pImageWidth: pTextFieldProperties.imageWidth
+        pImageHeight: pTextFieldProperties.imageHeight
         visible: !iControl.readOnly
         onClicked: {
             pReadOnly = true
