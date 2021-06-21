@@ -43,6 +43,45 @@ Rectangle {
             "SidebarRecents":           function(index) { console.log("clicked! "+ index); }
         }
     }
+    function fResetSidebar(){var availableHeight = height
+        if(availableHeight >= iRecentBtn.height) {
+            iRecentBtn.visible = true
+            availableHeight = availableHeight - iRecentBtn.height
+        } else { iRecentBtn.visible = false }
+
+        if(availableHeight >= iHomeBtn.height) {
+            iHomeBtn.visible = true
+            availableHeight = availableHeight - iHomeBtn.height
+        } else { iHomeBtn.visible = false }
+
+        if(availableHeight >= iBackBtn.height) {
+            iBackBtn.visible = true
+            availableHeight = availableHeight - iBackBtn.height
+        } else { iBackBtn.visible = false }
+
+        if(availableHeight >= iSettingsBtn.height) {
+            iSettingsBtn.visible = true
+            availableHeight = availableHeight - iSettingsBtn.height
+        } else { iSettingsBtn.visible = false }
+
+        fResetSidebarElements();
+        if(availableHeight > 0) {
+            var repeaterElements = 0
+            for( var i = 0; i < iAllSidebarItems.count; i++ ) {
+                if(iAllSidebarItems.get(i).showViaRepater) repeaterElements++ ;
+            }
+            var count = Math.floor(availableHeight / pSidebarElementSize)
+            if(count >= repeaterElements)
+            {
+                iKebabMenuBtn.visible = false
+                pVisibleSidebarElementsCount = repeaterElements
+
+            } else {
+                iKebabMenuBtn.visible = true
+                pVisibleSidebarElementsCount = count-1
+            }
+        }
+    }
     function fResetSidebarElements(){
         iAllSidebarItems.clear()
         iAllSidebarItems.append({elementName: "SidebarFullScreen",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
@@ -67,45 +106,7 @@ Rectangle {
         iAllSidebarItems.append({elementName: "SidebarRecents",         isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iRecentBtn.visible  })
     }
     onHeightChanged: {
-        var availableHeight = height
-        if(availableHeight >= iRecentBtn.height) {
-            iRecentBtn.visible = true
-            availableHeight = availableHeight - iRecentBtn.height
-        } else { iRecentBtn.visible = false }
-
-        if(availableHeight >= iHomeBtn.height) {
-            iHomeBtn.visible = true
-            availableHeight = availableHeight - iHomeBtn.height
-        } else { iHomeBtn.visible = false }
-
-        if(availableHeight >= iBackBtn.height) {
-            iBackBtn.visible = true
-            availableHeight = availableHeight - iBackBtn.height
-        } else { iBackBtn.visible = false }
-
-        if(availableHeight >= iSettingsBtn.height) {
-            iSettingsBtn.visible = true
-            availableHeight = availableHeight - iSettingsBtn.height
-        } else { iSettingsBtn.visible = false }
-
-        if(availableHeight > 0) {
-            var repeaterElements = 0
-            for( var i = 0; i < iAllSidebarItems.count; i++ ) {
-                if(iAllSidebarItems.get(i).showViaRepater) repeaterElements++ ;
-            }
-            var count = Math.floor(availableHeight / pSidebarElementSize)
-            if(count >= repeaterElements)
-            {
-                iKebabMenuBtn.visible = false
-                pVisibleSidebarElementsCount = repeaterElements
-
-            } else {
-                iKebabMenuBtn.visible = true
-                pVisibleSidebarElementsCount = count-1
-            }
-        }
-
-        fResetSidebarElements();
+        fResetSidebar()
     }
     Component {
         id: iKebabMenuPopupComponent
@@ -127,6 +128,7 @@ Rectangle {
                         model: iAllSidebarItems
                         UiImageButton {
                             asset: elementName
+                            enabled: isEnable
                             pImageHeight: pSidebarElementSize
                             pImageWidth: pSidebarElementSize
                             visible: showOnKebab && (index > pVisibleSidebarElementsCount-1)

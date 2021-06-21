@@ -61,7 +61,7 @@ ApplicationWindow {
             UiRowLayout {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-               UiColumnLayout {
+                UiColumnLayout {
                     id: iTestArea
                     Layout.fillWidth: true
                     Layout.fillHeight: true
