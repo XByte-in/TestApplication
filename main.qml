@@ -14,7 +14,7 @@ ApplicationWindow {
     height: 400
     x: Screen.width / 2 - width / 2
     y : Screen.height / 2 - height / 2
-    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
+    //flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
     color: UiTheme.colors.primary80
     visible: true
 
@@ -61,21 +61,32 @@ ApplicationWindow {
             UiRowLayout {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Rectangle {
+               UiColumnLayout {
                     id: iTestArea
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     color: "transparent"
 
                     UiButton {
-                        id:iButton
-                        text: "Click"
+                        text: "Boot Complete Toggle"
                         pSize: UiTheme.buttons.sizes.medium
                         pColor: UiTheme.buttons.colors.accent
                         onClicked: {
-                            //pEnable = !pEnable
-                            //reset()
+                            iSidebar.pIsBootComplete = !iSidebar.pIsBootComplete
+                            iSidebar.fResetSidebarElements()
                         }
+                    }
+                    UiButton {
+                        text: "Macro Feature toggle"
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        onClicked: {
+                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
+                            iSidebar.fResetSidebarElements()
+                        }
+                    }
+                    Item {
+                        Layout.fillHeight: true
                     }
                 }
 
