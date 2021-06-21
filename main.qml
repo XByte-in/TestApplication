@@ -10,32 +10,14 @@ import DialogButtonModelList 1.0
 import UiToolTipControl 1.0
 ApplicationWindow {
     id: iAppwin
-    width: 500
-    height: 300
+    width: 600
+    height: 400
     x: Screen.width / 2 - width / 2
     y : Screen.height / 2 - height / 2
     flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
     color: UiTheme.colors.primary80
     visible: true
-    property bool pEnable: true
-    ListModel {
-        id: iSidebarItems
-        property var actions : {
-            "Btn1": function(index) { console.log("clicked! "+ index); },
-            "Btn2": function(index) { console.log("clicked! "+ index); }
-        }
-    }
-    function reset(){
-        iSidebarItems.clear()
-        iSidebarItems.append({elementName: "Btn1", isEnable: pEnable,  onClick: call})
-        iSidebarItems.append({elementName: "Btn2", isEnable: pEnable, onClick: call })
-    }
-    Component.onCompleted: {
-        reset()
-    }
-    function call(){
-        console.log("call");
-    }
+
     Rectangle {
         anchors.fill: parent
         color: "transparent"
@@ -65,16 +47,6 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     onPositionChanged: iAppwin.startSystemMove()
                 }
-                UiButton {
-                    id:iButton
-                    text: "Click"
-                    pSize: UiTheme.buttons.sizes.medium
-                    pColor: UiTheme.buttons.colors.accent
-                    onClicked: {
-                        pEnable = !pEnable
-                        reset()
-                    }
-                }
                 UiImageButton {
                     id:iCloseBtn
                     asset: "TitlebarClose"
@@ -86,21 +58,33 @@ ApplicationWindow {
                 }
             }
 
-            Rectangle {
-                id: iTestArea
+            UiRowLayout {
                 Layout.fillHeight: true
-                border { color: UiTheme.colors.primary60 ; width: 1 }
-                Column {
-                    Repeater {
-                        model: iSidebarItems
-                        UiButton {
-                            text: elementName
-                            pSize: UiTheme.buttons.sizes.medium
-                            pColor: UiTheme.buttons.colors.accent
-                            enabled: isEnable
-                            onClicked: iSidebarItems.actions[elementName](index);
+                Layout.fillWidth: true
+                Rectangle {
+                    id: iTestArea
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    color: "transparent"
+
+                    UiButton {
+                        id:iButton
+                        text: "Click"
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        onClicked: {
+                            //pEnable = !pEnable
+                            //reset()
                         }
                     }
+                }
+
+                MainSidebar {
+                    id: iSidebar
+                    color: UiTheme.colors.primary80
+                    Layout.preferredWidth: 32
+                    Layout.fillHeight: true
+                    border { color: UiTheme.colors.primary60 ; width: 1 }
                 }
             }
         }

@@ -448,5 +448,6 @@
         <file>qrcAssets/TopbarReloadActive_click.svg</file>
         <file>qrcAssets/TopbarReloadActive_hover.svg</file>
         <file>qrcAssets/WarningIconYellow.svg</file>
+        <file>MainSidebar.qml</file>
     </qresource>
 </RCC>

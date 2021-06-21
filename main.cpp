@@ -103,12 +103,12 @@ int main(int argc, char *argv[])
     QObject* qmlRoot = engine->rootObjects().first();
     QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
 
-    QMetaObject::invokeMethod(mainWindow, "fSetTitle");
+    //QMetaObject::invokeMethod(mainWindow, "fSetTitle");
 
     QScreen* screen = QGuiApplication::primaryScreen();
     QRect  screenGeometry = screen->availableGeometry();
 
-    qInfo()<<screenGeometry.width();
-    qInfo()<<screenGeometry.height();
+//    qInfo()<<screenGeometry.width();
+//    qInfo()<<screenGeometry.height();
     return app.exec();
 }
