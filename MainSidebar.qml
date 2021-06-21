@@ -66,9 +66,6 @@ Rectangle {
         iAllSidebarItems.append({elementName: "SidebarHome",            isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iHomeBtn.visible  })
         iAllSidebarItems.append({elementName: "SidebarRecents",         isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iRecentBtn.visible  })
     }
-    Component.onCompleted: {
-        fResetSidebarElements()
-    }
     onHeightChanged: {
         var availableHeight = height
         if(availableHeight >= iRecentBtn.height) {
@@ -92,11 +89,15 @@ Rectangle {
         } else { iSettingsBtn.visible = false }
 
         if(availableHeight > 0) {
+            var repeaterElements = 0
+            for( var i = 0; i < iAllSidebarItems.count; i++ ) {
+                if(iAllSidebarItems.get(i).showViaRepater) repeaterElements++ ;
+            }
             var count = Math.floor(availableHeight / pSidebarElementSize)
-            if(count >= iAllSidebarItems.count)
+            if(count >= repeaterElements)
             {
                 iKebabMenuBtn.visible = false
-                pVisibleSidebarElementsCount = iAllSidebarItems.count
+                pVisibleSidebarElementsCount = repeaterElements
 
             } else {
                 iKebabMenuBtn.visible = true
@@ -111,12 +112,6 @@ Rectangle {
         UiWindowedPopup {
             id: iKebabMenuPopup
             property int kebabMenuElementsCount: 0
-            Component.onCompleted: {
-                kebabMenuElementsCount = 0
-                for( var i = 0; i < iAllSidebarItems.count; i++ ) {
-                    if (iAllSidebarItems.get(i).showOnKebab && (i > pVisibleSidebarElementsCount-1)) kebabMenuElementsCount += 1
-                }
-            }
             contentWidth: pSidebarElementSize * Math.ceil(kebabMenuElementsCount / 4)
             contentHeight: Math.min(pSidebarElementSize * 4, pSidebarElementSize * kebabMenuElementsCount)
             Rectangle {
@@ -136,6 +131,9 @@ Rectangle {
                             pImageWidth: pSidebarElementSize
                             visible: showOnKebab && (index > pVisibleSidebarElementsCount-1)
                             onClicked: iAllSidebarItems.actions[elementName](index)
+                            Component.onCompleted: {
+                                if(visible) kebabMenuElementsCount++
+                            }
                         }
                     }
                 }
