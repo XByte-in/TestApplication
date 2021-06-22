@@ -1,5 +1,5 @@
-#ifndef UITHEME_H
-#define UITHEME_H
+#ifndef _UI_THEME_H
+#define _UI_THEME_H
 
 #include <QObject>
 
@@ -15,4 +15,4 @@ private:
     static UiTheme* mTheme;
 };
 
-#endif // UITHEME_H
+#endif // _UI_THEME_H

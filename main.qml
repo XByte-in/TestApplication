@@ -3,9 +3,14 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
-import QtQuick.Controls 1.4
+import QtQml.Models 2.15
+
 import DirValidator 1.0
+//import DialogButtonModel 1.0
+//import DialogButtonModelList 1.0
+//import UiDialogWindow 1.0
 import UiToolTipControl 1.0
+
 ApplicationWindow {
     id: iAppwin
     width: 600

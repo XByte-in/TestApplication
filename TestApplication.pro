@@ -8,13 +8,11 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        UiDialogButtonModel.cpp \
-        UiDialogButtonModelList.cpp \
-        UiTheme.cpp \
-        UiToolTip.cpp \
-        directoryvalidator.cpp \
-        main.cpp \
-        mainbackend.cpp
+    directoryvalidator.cpp \
+    main.cpp \
+    mainbackend.cpp \
+    UiTheme.cpp \
+    UiToolTip.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,9 +28,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    UiDialogButtonModel.h \
-    UiDialogButtonModelList.h \
-    UiTheme.h \
-    UiToolTip.h \
     directoryvalidator.h \
-    mainbackend.h
+    mainbackend.h \
+    UiTheme.h \
+    UiToolTip.h

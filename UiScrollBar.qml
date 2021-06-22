@@ -23,15 +23,13 @@ ScrollBar {
     minimumSize: orientation == Qt.Horizontal ? height / width : width / height
 
     background: Rectangle {
-        color: iControl.policy === ScrollBar.AlwaysOn || (iControl.policy === ScrollBar.AsNeeded && (iControl.hovered || iControl.active))
-               ? UiTheme.colors.primary90 : "transparent"
+        color: "transparent"
     }
 
     contentItem: Rectangle {
-        implicitWidth: 8
-        implicitHeight: 8
+        implicitWidth: 6
+        implicitHeight: 6
         color: iControl.policy === ScrollBar.AlwaysOn || (iControl.policy === ScrollBar.AsNeeded && (iControl.hovered || iControl.active))
-               ? UiTheme.colors.primary50 : "transparent"
-        opacity: iControl.hovered ? 1 : 0.6
+               ? (iControl.hovered ? UiTheme.colors.primary40 : UiTheme.colors.primary50) : "transparent"
     }
 }

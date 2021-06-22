@@ -105,7 +105,9 @@ ComboBox {
                 border.color: iControl.pColor.normal.border
             }
 
-            ScrollIndicator.vertical: ScrollIndicator { }
+            ScrollBar.vertical: UiScrollBar {
+                policy: parent.contentHeight > parent.height ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+            }
         }
 
         background: Rectangle {

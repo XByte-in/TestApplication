@@ -3,11 +3,11 @@
 #include <QQmlApplicationEngine>
 
 UiTheme* UiTheme::mTheme = nullptr;
-UiTheme::UiTheme(QObject *parent) : QObject(parent)
+UiTheme::UiTheme(QObject* parent) : QObject(parent)
 {
 }
 
-UiTheme *UiTheme::instance()
+UiTheme* UiTheme::instance()
 {
     if (mTheme == nullptr)
     {

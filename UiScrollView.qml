@@ -25,7 +25,7 @@ T.ScrollView {
         y: iControl.topPadding
         height: iControl.availableHeight
         active: iControl.ScrollBar.vertical.active
-        policy: contentHeight > height && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+        policy: iControl.contentHeight > iControl.height && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 
     ScrollBar.horizontal: UiScrollBar {
@@ -34,6 +34,6 @@ T.ScrollView {
         y: iControl.height - height
         width: iControl.availableWidth
         active: iControl.ScrollBar.horizontal.active
-        policy: contentWidth > width && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
+        policy: iControl.contentWidth > iControl.width && iControl.hovered ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff
     }
 }

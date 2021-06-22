@@ -6,6 +6,8 @@
  * The copyright notice above does not evidence any actual or intended
  * publication of such source code.
  */
+
+//pragma Singleton
 import QtQuick 2.15
 
 QtObject {
@@ -548,4 +550,28 @@ QtObject {
             }
         }
     }
+
+//    property QtObject spinBoxes: QtObject {
+//        property QtObject sizes: QtObject {
+//            property QtObject normal: QtObject {
+//                property real indicatorWidth: 26
+//                property real indicatorImageWidth: 9
+//                property real indicatorImageHeight: 6
+//                property QtObject textFieldSize: textFields.sizes.normal
+//            }
+
+//            property QtObject small: QtObject {
+//                property real indicatorWidth: 17
+//                property real indicatorImageWidth: 7
+//                property real indicatorImageHeight: 4
+//                property QtObject textFieldSize: textFields.sizes.small
+//            }
+//        }
+
+//        property QtObject colors: QtObject {
+//            property QtObject accent: QtObject {
+//                property QtObject textFieldColor: textFields.colors.accent
+//            }
+//        }
+//    }
 }

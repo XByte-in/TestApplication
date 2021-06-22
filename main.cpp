@@ -1,4 +1,3 @@
-#include <QScreen>
 #include <QGuiApplication>
 #include <QtQuick/QQuickView>
 #include <QLoggingCategory>
@@ -13,47 +12,20 @@
 #include <dxgi.h>
 #include <d3d11.h>
 #include "qsgrendererinterface.h"
-#include <QElapsedTimer>
+#include <QFontDatabase>
+
 #include "directoryvalidator.h"
 #include "UiToolTip.h"
 #include "UiTheme.h"
-#include "UiDialogButtonModel.h"
-#include "UiDialogButtonModelList.h"
+// #include "UiDialogButtonModel.h"
+// #include "UiDialogButtonModelList.h"
+// #include "UiDialogWindow.h"
 #include "mainbackend.h"
 
 #define getQObject(a, b) qvariant_cast<QObject*>(a->property(b))
 
-#pragma comment(lib, "dxgi.lib")
-
-std::vector<IDXGIAdapter*> plrGetGpuList()
-{
-    IDXGIFactory1* pFactory = NULL;
-    IDXGIAdapter* pAdapter = NULL;
-    std::vector<IDXGIAdapter*> vAdapters;
-
-    if (FAILED(CreateDXGIFactory1(__uuidof(IDXGIFactory1), (void**)&pFactory)))
-    {
-        return vAdapters;
-    }
-
-    for (UINT i = 0; pFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND; ++i)
-    {
-        DXGI_ADAPTER_DESC adapterDesc;
-        pAdapter->GetDesc(&adapterDesc);
-
-        if (adapterDesc.VendorId == 0x1414 && adapterDesc.DeviceId == 0x8c)
-            continue; // Skip Microsoft Basic Render Driver
-
-        //XLOGI("--------GPU %d: %S (Vendor %04x Device %04x SubSysId %04x Revision %04x)\n", i, adapterDesc.Description, adapterDesc.VendorId, adapterDesc.DeviceId, adapterDesc.SubSysId, adapterDesc.Revision);
-        vAdapters.push_back(pAdapter);
-    }
-
-    if (pFactory)
-    {
-        pFactory->Release();
-    }
-    return vAdapters;
-}
+QQmlApplicationEngine* engine;
+QWindow* mainwindow;
 
 QSGRendererInterface::GraphicsApi plrQtRendererStringToEnum(std::string rendererString)
 {
@@ -85,30 +57,26 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<DirectoryValidator>("DirValidator", 1, 0, "DirValidator");
     qmlRegisterType<UiToolTip>("UiToolTipControl", 1, 0, "UiToolTip");
-    qmlRegisterType<UiDialogButtonModelList>("DialogButtonModelList", 1, 0, "DialogButtonModelList");
-    qmlRegisterType<UiDialogButtonModel>("DialogButtonModel", 1, 0, "DialogButtonModel");
-
+    // qmlRegisterType<UiDialogWindow>("UiDialogWindow", 1, 0, "UiDialogWindow");
+    // qmlRegisterType<UiDialogButtonModelList>("DialogButtonModelList", 1, 0, "DialogButtonModelList");
+    // qmlRegisterType<UiDialogButtonModel>("DialogButtonModel", 1, 0, "DialogButtonModel");
     QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D11Rhi);
+    QFontDatabase::addApplicationFont(":/fonts/Rubik-Regular.ttf");
+    QFontDatabase::addApplicationFont(":/fonts/Rubik-Medium.ttf");
 
     QQmlApplicationEngine* engine = new QQmlApplicationEngine;
     engine->rootContext()->setContextProperty("UiTheme", UiTheme::instance());
-
     MainBackend* mainBackend = new MainBackend;
     engine->rootContext()->setContextProperty("mainBackend", mainBackend);
     engine->load(QUrl("qrc:/main.qml"));
 
+    // QObject* qmlRoot = engine->rootObjects().first();
+    // QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
+    // QMetaObject::invokeMethod(mainWindow, "fSetTitle");
 
-
-
-    QObject* qmlRoot = engine->rootObjects().first();
-    QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
-
-    //QMetaObject::invokeMethod(mainWindow, "fSetTitle");
-
-    QScreen* screen = QGuiApplication::primaryScreen();
-    QRect  screenGeometry = screen->availableGeometry();
-
-//    qInfo()<<screenGeometry.width();
-//    qInfo()<<screenGeometry.height();
+    // QScreen* screen = QGuiApplication::primaryScreen();
+    // QRect  screenGeometry = screen->availableGeometry();
+    // qInfo()<<screenGeometry.width();
+    // qInfo()<<screenGeometry.height();
     return app.exec();
 }

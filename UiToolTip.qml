@@ -30,6 +30,15 @@ Window {
         if (shortcut === "") {
             return
         }
+        var comboKeys = shortcut.split(" + ")
+        shortcut = ""
+        var i;
+        for (i = 0; i < comboKeys.length; i++) {
+            shortcut += qsTranslate("QObject", String(comboKeys[i]));
+            if(i !== (comboKeys.length - 1)) {
+                    shortcut += " + "
+                    }
+        }
 
         shortcutText = "\n(%1)".arg(shortcut)
     }

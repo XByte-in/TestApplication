@@ -1,16 +1,15 @@
+#include <algorithm>
 #include <QGuiApplication>
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QScreen>
-#include <QQmlComponent>
-#include <QQmlContext>
 #include <QQmlApplicationEngine>
-#include <algorithm>
-#include "UiToolTip.h"
+#include <QQmlContext>
 #include "UiTheme.h"
+#include "UiToolTip.h"
 
 UiToolTipAttached::UiToolTipAttached(QObject* parent)
-    : QObject(parent), mText(""), mVisible(false)
+    : QObject(parent), mText(""), mConfShortcutProperty(""),  mVisible(false)
 {
 }
 
@@ -22,6 +21,16 @@ QString UiToolTipAttached::text() const
 void UiToolTipAttached::setText(const QString& text)
 {
     mText = text;
+}
+
+QString UiToolTipAttached::confShortcutProperty() const
+{
+    return mConfShortcutProperty;
+}
+
+void UiToolTipAttached::setConfShortcutProperty(const QString& confShortcutProperty)
+{
+    mConfShortcutProperty = confShortcutProperty;
 }
 
 bool UiToolTipAttached::visible() const
@@ -53,6 +62,7 @@ void UiToolTipAttached::setVisible(bool isShow)
             toolTipWindow = qobject_cast<QWindow*>(toolTipComponent->create());
 
             toolTipWindow->setProperty("toolTipText", mText);
+            toolTipWindow->setProperty("confShortcutProperty", mConfShortcutProperty);
 
             QPointF pos = attachee->mapToGlobal(QPointF(0, 0));
             QScreen* screen = QGuiApplication::screenAt(pos.toPoint());
