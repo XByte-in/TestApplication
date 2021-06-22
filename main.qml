@@ -5,8 +5,6 @@ import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
 import QtQuick.Controls 1.4
 import DirValidator 1.0
-import DialogButtonModel 1.0
-import DialogButtonModelList 1.0
 import UiToolTipControl 1.0
 ApplicationWindow {
     id: iAppwin
@@ -66,37 +64,52 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     color: "transparent"
-
+                    UiButton {
+                        text: "Open window"
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        onClicked: {
+                        }
+                    }
                     UiButton {
                         text: "Boot Complete Toggle"
                         pSize: UiTheme.buttons.sizes.medium
                         pColor: UiTheme.buttons.colors.accent
                         onClicked: {
                             iSidebar.pIsBootComplete = !iSidebar.pIsBootComplete
-                            iSidebar.fResetSidebarElements()
+                            //iSidebar.fResetSidebarElements()
                         }
                     }
-                    UiButton {
-                        text: "Macro Feature toggle"
-                        pSize: UiTheme.buttons.sizes.medium
-                        pColor: UiTheme.buttons.colors.accent
-                        onClicked: {
-                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
-                            iSidebar.fResetSidebarElements()
-                        }
-                    }
+//                    UiButton {
+//                        text: "Macro Feature toggle"
+//                        pSize: UiTheme.buttons.sizes.medium
+//                        pColor: UiTheme.buttons.colors.accent
+//                        onClicked: {
+//                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
+//                            iSidebar.fResetSidebarElements()
+//                        }
+//                    }
+//                    UiButton {
+//                        text: "Enable full screen"
+//                        pSize: UiTheme.buttons.sizes.medium
+//                        pColor: UiTheme.buttons.colors.accent
+//                        property bool test:false
+//                        onClicked: {
+//                            iSidebar.fRefresh()
+//                        }
+//                    }
                     Item {
                         Layout.fillHeight: true
                     }
                 }
 
-                MainSidebar {
-                    id: iSidebar
-                    color: UiTheme.colors.primary80
-                    Layout.preferredWidth: 32
-                    Layout.fillHeight: true
-                    border { color: UiTheme.colors.primary60 ; width: 1 }
-                }
+//                MainSidebar {
+//                    id: iSidebar
+//                    color: UiTheme.colors.primary80
+//                    Layout.preferredWidth: 32
+//                    Layout.fillHeight: true
+//                    border { color: UiTheme.colors.primary60 ; width: 1 }
+//                }
             }
         }
     }
