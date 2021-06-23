@@ -5,74 +5,61 @@ import QtQuick.Window 2.15
 import QtQuick.Shapes 1.15
 import Qt.labs.platform 1.1
 import UiToolTipControl 1.0
-import DialogButtonModel 1.0
-import DialogButtonModelList 1.0
-//import UiFolderDialog 1.0
 import QtQuick.Shapes 1.12
 
 Rectangle {
-    id: iSidebar
+    id: iRoot
+    property int pSidebarElementSize: 32
 
     property bool pIsBootComplete: false
     property bool pIsMacoFeatureEnabled: false
-
-    property int pSidebarElementSize: 32
     property int pVisibleSidebarElementsCount: 0
+    readonly property string pFullscreen    : "fullscreen"
+    readonly property string pVolumeUp      : "volumeUp"
+    readonly property string pVolumeDown    : "volumeDown"
+    readonly property string pLockCursor    : "lockCursor"
+    readonly property string pGameControl   : "gameControl"
+    readonly property string pSync          : "sync"
+    readonly property string pMacro         : "macro"
+    readonly property string pMemoryTrim    : "memoryTrim"
+    readonly property string pInstallApk    : "installApk"
+    readonly property string pScreenshot    : "screenShot"
+    readonly property string pMediaFolder   : "mediaFolder"
+    readonly property string pRotate        : "rotate"
+    readonly property string pShake         : "shake"
+    readonly property string pMim           : "mim"
+    readonly property string pEcoMode       : "ecoMode"
+    readonly property string pSettings      : "settings"
+    readonly property string pBack          : "back"
+    readonly property string pHome          : "home"
+    readonly property string pRecent        : "recent"
 
-    readonly property string pFullscreen : "fullscreen"
-//    property list<QtObject> paramModel: [
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarFullScreen"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarVolumeUp"       ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarVolumeDown"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarLockCursor"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarControls"       ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarSync"           ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarMacro"          ;  pIsEnable: true           ;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarMemoryTrim"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarInstallApk"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarScreenshot"     ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarMediaFolder"    ;  pIsEnable: true           ;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarRotate"         ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarShake"          ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarInstanceManager";  pIsEnable: true           ;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarEcoMode"        ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: true ;  pShowOnKebabMenu: true                 ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarSettings"       ;  pIsEnable: true           ;  pShowViaRepaterOnly: false;  pShowOnKebabMenu: !iSettingsBtn.visible;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarBack"           ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: false;  pShowOnKebabMenu: !iBackBtn.visible    ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarHome"           ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: false;  pShowOnKebabMenu: !iHomeBtn.visible    ;  },
-//        MainSidebarElements{ pElementId:    pAsset: "SidebarRecents"        ;  pIsEnable: pIsBootComplete;  pShowViaRepaterOnly: false;  pShowOnKebabMenu: !iRecentBtn.visible  ;  }]
-
-    ListModel {
-        id: iAllSidebarItems
-        property var actions : {
-            "SidebarFullScreen":        function(index) { console.log("clicked! "+ index); },
-            "SidebarVolumeUp":          function(index) { console.log("clicked! "+ index); },
-            "SidebarVolumeDown":        function(index) { console.log("clicked! "+ index); },
-            "SidebarLockCursor":        function(index) { console.log("clicked! "+ index); },
-            "SidebarControls":          function(index) { console.log("clicked! "+ index); },
-            "SidebarSync":              function(index) { console.log("clicked! "+ index); },
-            "SidebarMacro":             function(index) { console.log("clicked! "+ index); },
-            "SidebarMemoryTrim":        function(index) { console.log("clicked! "+ index); },
-            "SidebarInstallApk":        function(index) { console.log("clicked! "+ index); },
-            "SidebarScreenshot":        function(index) { console.log("clicked! "+ index); },
-            "SidebarMediaFolder":       function(index) { console.log("clicked! "+ index); },
-            "SidebarRotate":            function(index) { console.log("clicked! "+ index); },
-            "SidebarShake":             function(index) { console.log("clicked! "+ index); },
-            "SidebarInstanceManager":   function(index) { console.log("clicked! "+ index); },
-            "SidebarEcoMode":           function(index) { console.log("clicked! "+ index); },
-            "SidebarSettings":          function(index) { console.log("clicked! "+ index); },
-            "SidebarBack":              function(index) { console.log("clicked! "+ index); },
-            "SidebarHome":              function(index) { console.log("clicked! "+ index); },
-            "SidebarRecents":           function(index) { console.log("clicked! "+ index); }
-        }
+    property list<QtObject> iAllSidebarItems: [
+        MainSidebarElement { pElementId: pFullscreen;   pAsset: "SidebarFullScreen";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pVolumeUp;     pAsset: "SidebarVolumeUp";          pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pVolumeDown;   pAsset: "SidebarVolumeDown";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pLockCursor;   pAsset: "SidebarLockCursor";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pGameControl;  pAsset: "SidebarControls";          pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pSync;         pAsset: "SidebarSync";              pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pMacro;        pAsset: "SidebarMacro";             pIsFeatureEnable: pIsMacoFeatureEnabled;    onClicked: fCall(); },
+        MainSidebarElement { pElementId: pMemoryTrim;   pAsset: "SidebarMemoryTrim";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pInstallApk;   pAsset: "SidebarInstallApk";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pScreenshot;   pAsset: "SidebarScreenshot";        pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pMediaFolder;  pAsset: "SidebarMediaFolder";       onClicked: fCall(); },
+        MainSidebarElement { pElementId: pRotate;       pAsset: "SidebarRotate";            pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pShake;        pAsset: "SidebarShake";             pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pMim;          pAsset: "SidebarInstanceManager";   onClicked: fCall(); },
+        MainSidebarElement { pElementId: pEcoMode;      pAsset: "SidebarEcoMode";           pIsEnable: pIsBootComplete; onClicked: fCall(); },
+        MainSidebarElement { pElementId: pSettings;     pAsset: "SidebarSettings";          pShowViaRepaterOnly: false; pShowOnKebabMenu: !iSettingsBtn.visible;    onClicked: fCall(); },
+        MainSidebarElement { pElementId: pBack;         pAsset: "SidebarBack";              pIsEnable: pIsBootComplete; pShowViaRepaterOnly: false; pShowOnKebabMenu: !iBackBtn.visible;    onClicked: fCall(); },
+        MainSidebarElement { pElementId: pHome;         pAsset: "SidebarHome";              pIsEnable: pIsBootComplete; pShowViaRepaterOnly: false; pShowOnKebabMenu: !iHomeBtn.visible;    onClicked: fCall(); },
+        MainSidebarElement { pElementId: pRecent;       pAsset: "SidebarRecents";           pIsEnable: pIsBootComplete; pShowViaRepaterOnly: false; pShowOnKebabMenu: !iRecentBtn.visible;  onClicked: fCall(); }
+    ]
+    onHeightChanged: {
+        fResetSidebar()
     }
-    function fRefresh(){
-        console.log("refresh call")
-        paramModel[0].refresh()
-        console.log("refresh called")
-        //iAllSidebarItems.setProperty(index, string, value)
-    }
-
-    function fResetSidebar(){var availableHeight = height
+    function fResetSidebar() {
+        var availableHeight = iRoot.height
         if(availableHeight >= iRecentBtn.height) {
             iRecentBtn.visible = true
             availableHeight = availableHeight - iRecentBtn.height
@@ -93,12 +80,11 @@ Rectangle {
             availableHeight = availableHeight - iSettingsBtn.height
         } else { iSettingsBtn.visible = false }
 
-        fResetSidebarElements();
         if(availableHeight > 0) {
             var repeaterElements = 0
-            for( var i = 0; i < iAllSidebarItems.count; i++ ) {
-                if(iAllSidebarItems.get(i).showViaRepater) repeaterElements++ ;
-            }
+            for (var i = 0; i < iAllSidebarItems.length; i++)
+                if(iAllSidebarItems[i].pShowViaRepaterOnly && iAllSidebarItems[i].pIsFeatureEnable)
+                    repeaterElements++ ;
             var count = Math.floor(availableHeight / pSidebarElementSize)
             if(count >= repeaterElements)
             {
@@ -111,42 +97,14 @@ Rectangle {
             }
         }
     }
-    function fResetSidebarElements(){
-        //iSidebarRepeater.model = []
-        iAllSidebarItems.clear()
-        iAllSidebarItems.append(iQObj);
-        //        iAllSidebarItems.append({elementName: "SidebarFullScreen",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarVolumeUp",        isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarVolumeDown",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarLockCursor",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarControls",        isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarSync",            isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        if(pIsMacoFeatureEnabled)
-        //            iAllSidebarItems.append({elementName: "SidebarMacro",       isEnable: true           , showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarMemoryTrim",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarInstallApk",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarScreenshot",      isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarMediaFolder",     isEnable: true           , showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarRotate",          isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarShake",           isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarInstanceManager", isEnable: true           , showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarEcoMode",         isEnable: pIsBootComplete, showViaRepater: true , showOnKebab: true  })
-        //        iAllSidebarItems.append({elementName: "SidebarSettings",        isEnable: true           , showViaRepater: false, showOnKebab: !iSettingsBtn.visible  })
-        //        iAllSidebarItems.append({elementName: "SidebarBack",            isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iBackBtn.visible  })
-        //        iAllSidebarItems.append({elementName: "SidebarHome",            isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iHomeBtn.visible  })
-        //        iAllSidebarItems.append({elementName: "SidebarRecents",         isEnable: pIsBootComplete, showViaRepater: false, showOnKebab: !iRecentBtn.visible  })
-        //iSidebarRepeater.model = iAllSidebarItems
-    }
-    onHeightChanged: {
-        fResetSidebar()
-    }
+
     Component {
         id: iKebabMenuPopupComponent
         UiWindowedPopup {
             id: iKebabMenuPopup
-            property int kebabMenuElementsCount: 0
-            contentWidth: pSidebarElementSize * Math.ceil(kebabMenuElementsCount / 4)
-            contentHeight: Math.min(pSidebarElementSize * 4, pSidebarElementSize * kebabMenuElementsCount)
+            property int pKebabMenuElementsCount: 0
+            contentWidth: pSidebarElementSize * Math.ceil(pKebabMenuElementsCount / 4)
+            contentHeight: Math.min(pSidebarElementSize * 4, pSidebarElementSize * pKebabMenuElementsCount)
             Rectangle {
                 anchors.fill: parent
                 color: UiTheme.colors.primary80
@@ -159,15 +117,13 @@ Rectangle {
                     Repeater {
                         model: iAllSidebarItems
                         delegate: UiImageButton {
-                            asset: elementName
-                            enabled: isEnable
+                            asset: model.ModelData.pAsset
+                            enabled: model.ModelData.pIsEnable
                             pImageHeight: pSidebarElementSize
                             pImageWidth: pSidebarElementSize
-                            visible: showOnKebab && (index > pVisibleSidebarElementsCount-1)
-                            onClicked: iAllSidebarItems.actions[elementName](index)
-                            Component.onCompleted: {
-                                if(visible) kebabMenuElementsCount++
-                            }
+                            visible: model.ModelData.pIsFeatureEnable && model.ModelData.pShowOnKebabMenu && (index > pVisibleSidebarElementsCount-1)
+                            onClicked: model.ModelData.clicked()
+                            Component.onCompleted: if(visible) pKebabMenuElementsCount++
                         }
                     }
                 }
@@ -184,15 +140,14 @@ Rectangle {
     UiColumnLayout {
         anchors.fill: parent
         Repeater {
-            id: iSidebarRepeater
-            model: paramModel
+            model: iAllSidebarItems
             delegate: Component {
                 UiImageButton {
-                    asset: model.modelData.elementName
+                    asset: model.modelData.pAsset
                     pImageHeight: pSidebarElementSize
                     pImageWidth: pSidebarElementSize
-                    enabled: model.modelData.isEnable
-                    //visible: (index <= pVisibleSidebarElementsCount-1) && model.modelData.showViaRepater
+                    enabled: model.modelData.pIsEnable
+                    visible: (index <= pVisibleSidebarElementsCount-1) && model.modelData.pIsFeatureEnable && model.modelData.pShowViaRepaterOnly
                     onClicked: model.modelData.clicked()
                 }
             }
@@ -202,6 +157,7 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter
             pImageHeight: pSidebarElementSize
             pImageWidth: pSidebarElementSize
+
             asset: "SidebarKebabClosed"
             onClicked: {
                 asset = "SidebarKebabOpen"
@@ -250,5 +206,9 @@ Rectangle {
             asset: "SidebarRecents"
             enabled: pIsBootComplete
         }
+    }
+
+    function fCall() {
+        console.log("Test");
     }
 }

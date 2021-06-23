@@ -323,7 +323,7 @@
         <file>UiHelpPopup.qml</file>
         <file>MainTopbar.qml</file>
         <file>MainSidebar.qml</file>
-        <file>MainSidebarElements.qml</file>
+        <file>MainSidebarElement.qml</file>
         <file>DraggableItem.qml</file>
         <file>UiColumnLayout1.qml</file>
         <file>UiProgressBar.qml</file>

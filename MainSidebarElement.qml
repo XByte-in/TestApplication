@@ -11,9 +11,12 @@ import QtQuick 2.15
 QtObject {
     property string pElementId
     property string pAsset
-    property bool pIsEnable
-    property bool pShowViaRepaterOnly
-    property bool pShowOnKebabMenu
+    property string pTooltipText
+    property string pConfShortcutProperty
+    property bool pIsFeatureEnable: true
+    property bool pIsEnable: true
+    property bool pShowViaRepaterOnly: true
+    property bool pShowOnKebabMenu: false
 
-    signal clicked
+    signal clicked()
 }

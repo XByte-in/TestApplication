@@ -82,39 +82,37 @@ ApplicationWindow {
                         pColor: UiTheme.buttons.colors.accent
                         onClicked: {
                             iSidebar.pIsBootComplete = !iSidebar.pIsBootComplete
-                            //iSidebar.fResetSidebarElements()
                         }
                     }
-//                    UiButton {
-//                        text: "Macro Feature toggle"
-//                        pSize: UiTheme.buttons.sizes.medium
-//                        pColor: UiTheme.buttons.colors.accent
-//                        onClicked: {
-//                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
-//                            iSidebar.fResetSidebarElements()
-//                        }
-//                    }
-//                    UiButton {
-//                        text: "Enable full screen"
-//                        pSize: UiTheme.buttons.sizes.medium
-//                        pColor: UiTheme.buttons.colors.accent
-//                        property bool test:false
-//                        onClicked: {
-//                            iSidebar.fRefresh()
-//                        }
-//                    }
+                    UiButton {
+                        text: "Macro Feature toggle"
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        onClicked: {
+                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
+                        }
+                    }
+                    UiButton {
+                        text: "Enable full screen"
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        property bool test:false
+                        onClicked: {
+                            iSidebar.fRefresh()
+                        }
+                    }
                     Item {
                         Layout.fillHeight: true
                     }
                 }
 
-//                MainSidebar {
-//                    id: iSidebar
-//                    color: UiTheme.colors.primary80
-//                    Layout.preferredWidth: 32
-//                    Layout.fillHeight: true
-//                    border { color: UiTheme.colors.primary60 ; width: 1 }
-//                }
+                MainSidebar {
+                    id: iSidebar
+                    color: UiTheme.colors.primary80
+                    Layout.preferredWidth: 32
+                    Layout.fillHeight: true
+                    border { color: UiTheme.colors.primary60 ; width: 1 }
+                }
             }
         }
     }
