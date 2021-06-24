@@ -6,17 +6,21 @@
  * The copyright notice above does not evidence any actual or intended
  * publication of such source code.
  */
+
 import QtQuick 2.15
 
 QtObject {
-    property string pElementId
-    property string pAsset
-    property string pTooltipText
-    property string pConfShortcutProperty
+    property string pElementId:""
+    property string pAsset:""
+    property string pTooltipText:""
+    property string pConfShortcutProperty:""
     property bool pIsFeatureEnable: true
     property bool pIsEnable: true
     property bool pShowViaRepaterOnly: true
     property bool pShowOnKebabMenu: false
+    property bool pRunImageAnimation: false
+    property int pAcceptedMouseButtons: Qt.LeftButton
 
-    signal clicked()
+    signal clicked(QtObject button)
+    signal rightClicked(QtObject button)
 }
