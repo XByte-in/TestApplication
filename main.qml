@@ -10,17 +10,17 @@ import DirValidator 1.0
 //import DialogButtonModelList 1.0
 //import UiDialogWindow 1.0
 import UiToolTipControl 1.0
+import MyMask 1.0
 
 ApplicationWindow {
     id: iAppwin
-    width: 600
-    height: 400
+    width: 500
+    height: 350
     x: Screen.width / 2 - width / 2
     y : Screen.height / 2 - height / 2
-    //flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
+    flags: Qt.Window | Qt.FramelessWindowHint | Qt.WindowMinMaxButtonsHint
     color: UiTheme.colors.primary80
     visible: true
-
     Rectangle {
         anchors.fill: parent
         color: "transparent"
@@ -62,50 +62,44 @@ ApplicationWindow {
             }
 
             UiRowLayout {
+                id: iTest
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 UiColumnLayout {
-                    id: iTestArea
-                    Layout.fillWidth: true
                     Layout.fillHeight: true
-                    color: "transparent"
-                    UiButton {
-                        text: "Open window"
-                        pSize: UiTheme.buttons.sizes.medium
-                        pColor: UiTheme.buttons.colors.accent
-                        onClicked: {
+                    Layout.fillWidth: true
+                    UiImage {
+                        asset: "EditorDpad"
+                        pImageWidth: 200
+                        pImageHeight: pImageWidth
+                        Layout.alignment: Qt.AlignTop
+                        MouseArea {
+                            propagateComposedEvents: true
+                            anchors.fill: parent
+                            onClicked: {
+                                console.log("left Image clicked")
+                                mouse.accepted = false
+                            }
                         }
                     }
-                    UiButton {
-                        text: "Boot Complete Toggle"
-                        pSize: UiTheme.buttons.sizes.medium
-                        pColor: UiTheme.buttons.colors.accent
-                        onClicked: {
-                            iSidebar.pIsBootComplete = !iSidebar.pIsBootComplete
+                    UiImage {
+                        id: rytImage
+                        asset: "EditorDpad"
+                        pImageWidth: 200
+                        pImageHeight: pImageWidth
+                        Layout.alignment: Qt.AlignBottom
+                        Layout.topMargin: -100
+                        Layout.leftMargin: 50
+                        MouseArea {
+                            propagateComposedEvents: true
+                            anchors.fill: parent
+                            onClicked: {
+                                console.log("Right Image clicked")
+                                mouse.accepted = false
+                            }
                         }
-                    }
-                    UiButton {
-                        text: "Macro Feature toggle"
-                        pSize: UiTheme.buttons.sizes.medium
-                        pColor: UiTheme.buttons.colors.accent
-                        onClicked: {
-                            iSidebar.pIsMacoFeatureEnabled = !iSidebar.pIsMacoFeatureEnabled
-                        }
-                    }
-                    UiButton {
-                        text: "Enable full screen"
-                        pSize: UiTheme.buttons.sizes.medium
-                        pColor: UiTheme.buttons.colors.accent
-                        property bool test:false
-                        onClicked: {
-                            iSidebar.fRefresh()
-                        }
-                    }
-                    Item {
-                        Layout.fillHeight: true
                     }
                 }
-
                 MainSidebar {
                     id: iSidebar
                     color: UiTheme.colors.primary80

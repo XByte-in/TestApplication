@@ -105,9 +105,9 @@ Rectangle {
             pAsset: "SidebarControls"
             pTooltipText: "Game controls"
             pConfShortcutProperty: ""
-            pIsEnable: pIsBootComplete
+            pIsEnable: true
             pAcceptedMouseButtons: Qt.LeftButton | Qt.RightButton
-            onClicked: fOpenGameControl(button)
+            onClicked: fOpenGameControlsPopup(button)
             onRightClicked: fOpenControlsEditorWindow(button)
         },
         MainSidebarElement {
@@ -425,7 +425,6 @@ Rectangle {
                             Component.onCompleted: if(visible) pKebabMenuElementsCount++
                             UiToolTip.text: qsTranslate("QObject", model.modelData.pTooltipText)
                             pImageAnimationRunning: model.modelData.pRunImageAnimation
-                            pAcceptedMouseButtons: model.modelData.pAcceptedMouseButtons
                             MouseArea {
                                 anchors.fill: parent
                                 acceptedButtons: model.modelData.pAcceptedMouseButtons
@@ -464,7 +463,6 @@ Rectangle {
                     visible: (index <= pVisibleSidebarElementsCount-1) && model.modelData.pIsFeatureEnable && model.modelData.pShowViaRepaterOnly
                     UiToolTip.text: qsTranslate("QObject", model.modelData.pTooltipText)
                     pImageAnimationRunning: model.modelData.pRunImageAnimation
-                    pAcceptedMouseButtons: model.modelData.pAcceptedMouseButtons
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: model.modelData.pAcceptedMouseButtons
@@ -590,28 +588,12 @@ Rectangle {
         }
     }
 
-    function fOpenGameControl(button, mouse) {
-        if(mouse.button === Qt.RightButton)
-            fOpenControlsEditorWindow()
-        else
-            fOpenGameControlsPopup(button)
-    }
     function fOpenGameControlsPopup(button) {
-        kmmBackend.kmmPopupStart()
         var gameControlsWin = iGameControlsPopupComponent.createObject(iAppwin)
         gameControlsWin.screen = iAppwin.screen
 
-        //This is a variant list with index of the selected scheme
-        //stored at 0th location and scheme list at 1st.
-        var schemeInfo = kmmBackend.getPopupSchemes()
-        gameControlsWin.schemeModel = schemeInfo[1]
-        gameControlsWin.schemeIdx = schemeInfo[0]
-        pGameControlsSensitivityEnabled = kmmBackend.hasPanControl()
-        gameControlsWin.updateSenstivity()
-
         gameControlsWin.x = iSidebar.mapToGlobal(0, 0).x - gameControlsWin.width + gameControlsWin.shadowThickness
-        gameControlsWin.y = button.mapToGlobal(0, 0).y - gameControlsWin.shadowThickness
-        pGameControlsPopupLoaded = true
+        gameControlsWin.y =iKebabMenuBtn.mapToGlobal(0, 0).y - gameControlsWin.shadowThickness
         gameControlsWin.show()
     }
     function fOpenControlsEditorWindow() {
@@ -640,5 +622,112 @@ Rectangle {
     }
     function fToggleGameControlsVisibility(isVisible) {
         pIsGameControlsOverlayEnabled = isVisible
+    }
+    property real mx: 1.00
+    property real my: 1.00
+    Component {
+        id: iGameControlsPopupComponent
+        UiWindowedPopup {
+            id: iGameControlsPopup
+            contentWidth: iContentRect.width
+            contentHeight: iContentRect.height
+            visible: false
+            onWidthChanged: {
+                iGameControlsPopup.x = iSidebar.mapToGlobal(0, 0).x - iGameControlsPopup.width + iGameControlsPopup.shadowThickness
+            }
+
+            Rectangle {
+                id: iContentRect
+                width: iContentLayout.width + iContentLayout.anchors.leftMargin
+                       + iContentLayout.anchors.rightMargin
+                height: iContentLayout.height + iContentLayout.anchors.topMargin
+                        + iContentLayout.anchors.bottomMargin
+                color: UiTheme.colors.primary70
+                border.width: 1
+                border.color: UiTheme.colors.primary60
+
+                ColumnLayout {
+                    id: iContentLayout
+                    width: Math.max(164, childrenRect.width)
+                    anchors.centerIn: parent
+                    anchors.margins: 8
+                    spacing: 8
+
+                    RowLayout {
+                        spacing: 16
+                        Layout.preferredWidth: childrenRect.width
+                        Layout.preferredHeight: childrenRect.height
+                        RowLayout {
+                            Layout.preferredWidth: childrenRect.width
+                            Layout.preferredHeight: childrenRect.height
+                            spacing: 8
+                            Text {
+                                text: "X"
+                                font: UiTheme.fonts.bodySmall
+                                color: UiTheme.colors.primary20
+                                horizontalAlignment: Text.AlignLeft
+                            }
+                            UiSpinBox {
+                                id: iMouseSensitivityXSpinBox
+                                Layout.preferredWidth: 58
+                                Layout.preferredHeight: 24
+                                realFrom: 0.01
+                                realTo: 10
+                                realStepSize: 0.01
+                                realValue: mx
+                                decimalPlaces: 2
+
+                                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
+
+                                onValueChanged: {
+                                    mx = iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor
+                                    my = iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor
+                                    console.log("------")
+                                    console.log("X: "+ mx)
+                                    console.log("Y: "+ my)
+                                }
+                            }
+                        }
+                        RowLayout {
+                            Layout.preferredWidth: childrenRect.width
+                            Layout.preferredHeight: childrenRect.height
+                            spacing: 8
+                            Text {
+                                text: "Y"
+                                font: UiTheme.fonts.bodySmall
+                                color: UiTheme.colors.primary20
+                                horizontalAlignment: Text.AlignLeft
+                            }
+                            UiSpinBox {
+                                id: iMouseSensitivityYSpinBox
+                                Layout.preferredWidth: 58
+                                Layout.preferredHeight: 24
+                                realFrom: 0.01
+                                realTo: 10
+                                realStepSize: 0.01
+                                realValue: my
+                                decimalPlaces: 2
+
+                                inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
+
+                                onValueChanged: {
+                                    mx = iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor
+                                    my = iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor
+                                    console.log("------")
+                                    console.log("X: "+ mx)
+                                    console.log("Y: "+ my)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            onClosePopup: {
+                iGameControlsPopup.destroy()
+            }
+        }
     }
 }

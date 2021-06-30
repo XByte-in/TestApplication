@@ -1,76 +1,107 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import DirValidator 1.0
+/*
+ * Copyright (C) 2020-2021 BlueStack Systems, Inc.
+ * All Rights Reserved
+ *
+ * THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF BLUESTACK SYSTEMS, INC.
+ * The copyright notice above does not evidence any actual or intended
+ * publication of such source code.
+ */
+
+import QtQuick 2.0
+import QtQuick.Controls 2.15
 
 SpinBox {
-    id: iControl
+    id: control
 
-    property QtObject pSize: UiTheme.spinBoxes.sizes.normal
-    property QtObject pColor: UiTheme.spinBoxes.colors.accent
-    property int pInputValidationState: UiTextField.InputValidation.Valid
+    property int spinBoxValue : 1
+    property int decimalPlaces: 0
+    property real realValue: 0.0
+    property real realFrom: 0.0
+    property real realTo: 100.0
+    property real realStepSize: 1.0
+    property real factor: Math.pow(10, decimalPlaces)
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            contentItem.implicitWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding)
+    stepSize: realStepSize * factor
+    value: Math.round(realValue * factor)
+    to : realTo * factor
+    from : realFrom * factor
+    editable: true
 
-    topPadding: 0
-    bottomPadding: 0
-    leftPadding: 0
-    rightPadding: pSize.indicatorWidth - 1
-
-    contentItem: UiTextField {
-        pSize: iControl.pSize.textFieldSize
-        pColor: iControl.pColor.textFieldColor
-        text: iControl.displayText
-        readOnly: !iControl.editable
-        horizontalAlignment: TextInput.AlignHCenter
-        pInputValidationState: iControl.pInputValidationState
-        validator: iControl.validator
-        pColorState: pInputValidationState === UiTextField.InputValidation.Error ?
-                         pColor.error : pInputValidationState === UiTextField.InputValidation.Warning ?
-                             pColor.warning : iControl.activeFocus ?
-                                 pColor.active : iControl.hovered ?
-                                     pColor.hover : pColor.normal
+    background: Rectangle {
+        color: UiTheme.colors.primary80
+        border.color: UiTheme.colors.primary60
+        radius: 1
+    }
+    contentItem: TextInput {
+        Component.onCompleted: text = control.textFromValue(control.value, control.locale)
+        id: spinboxTextInput
+        color: UiTheme.colors.primary10
+        font.family: "Segoe UI"
+        readOnly: !control.editable
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.rightMargin: 20
+        horizontalAlignment: Qt.AlignHCenter
+        verticalAlignment: Qt.AlignVCenter
+        validator: control.validator
+        inputMethodHints: control.inputMethodHints
+        onTextChanged:  {
+            console.log("text: "+text)
+            if(focus)
+                value = control.valueFromText(text, control.locale)
+        }
     }
 
     up.indicator: Rectangle {
-        height: parent.height / 2 + 1
-        implicitWidth: iControl.pSize.indicatorWidth
-        implicitHeight: iControl.pSize.indicatorWidth
-        border.color: iControl.contentItem.background.border.color
-        border.width: iControl.contentItem.background.border.width
-        color: iControl.contentItem.background.color
+        height: parent.height / 2
         anchors.right: parent.right
         anchors.top: parent.top
-
-        Image {
-            source: "Assets/downArrow.png"
-            height: iControl.pSize.indicatorImageHeight
-            width: iControl.pSize.indicatorImageWidth
+        implicitHeight: 40
+        implicitWidth: 20
+        color: "transparent"
+        border.color: UiTheme.colors.primary60
+        UiImageButton {
+            asset: "UpArrow"
+            pImageWidth: 8
+            pImageHeight: 10
             anchors.centerIn: parent
+            onClicked: {
+                increase()
+                spinboxTextInput.text= control.textFromValue(control.value, control.locale)
+            }
         }
     }
 
     down.indicator: Rectangle {
         height: parent.height / 2
-        implicitWidth: iControl.pSize.indicatorWidth
-        implicitHeight: iControl.pSize.indicatorWidth
-        border.color: iControl.contentItem.background.border.color
-        border.width: iControl.contentItem.background.border.width
-        color: iControl.contentItem.background.color
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-
-        Image {
-            source: "Assets/upArrow.png"
-            height: iControl.pSize.indicatorImageHeight
-            width: iControl.pSize.indicatorImageWidth
+        implicitHeight: 40
+        implicitWidth: 20
+        color: "transparent"
+        border.color: UiTheme.colors.primary60
+        UiImageButton {
+            asset: "DownArrow"
+            pImageWidth: 8
+            pImageHeight: 10
             anchors.centerIn: parent
+            onClicked: {
+                decrease()
+                spinboxTextInput.text= control.textFromValue(control.value, control.locale)
+            }
         }
     }
 
-    background: Rectangle {
-        color: "transparent"
+    implicitWidth: 60
+    implicitHeight: 20
+
+    textFromValue: function(value, locale) {
+        return parseFloat(value / factor).toFixed(decimalPlaces);
+    }
+
+    valueFromText: function(text, locale) {
+        return Number.fromLocaleString(locale, text) * factor
     }
 }

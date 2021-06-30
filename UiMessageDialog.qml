@@ -24,6 +24,8 @@ UiDialogWindow {
 
     signal checkBoxClicked(var checked)
 
+    onClosed: messageWindow.destroy()
+
     onVisibleChanged: {
         if (visible)
         {

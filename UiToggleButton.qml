@@ -17,7 +17,6 @@ import QtQuick.Controls.impl 2.12
 Switch  {
     id: iControl
     property QtObject pSize: UiTheme.toggleButtons.sizes.medium
-    property string imageToolTip: ""
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -25,16 +24,26 @@ Switch  {
                              implicitContentHeight + topPadding + bottomPadding,
                              implicitIndicatorHeight + topPadding + bottomPadding)
 
+    UiToolTip.visible: iIndicatorMouseArea.containsMouse
+
     padding: 0
     spacing: pSize.spacing
     opacity: enabled ? 1 : 0.4
-    indicator: UiImageButton {
+    indicator: UiImage {
         x: iControl.text ? iControl.leftPadding : iControl.leftPadding + (iControl.availableWidth - width) / 2
         y: iControl.topPadding + (iControl.availableHeight - height) / 2
         pImageWidth: iControl.pSize.iconWidth
         pImageHeight: iControl.pSize.iconHeight
         asset: iControl.pSize.iconAsset + (iControl.checked ? "On" : "Off") + (iControl.hovered? "_hover" : "")
-        UiToolTip.text: imageToolTip
+        MouseArea {
+            id: iIndicatorMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onPressed: {
+                UiToolTip.visible = false
+                mouse.accepted = false
+            }
+        }
     }
 
     contentItem: CheckLabel {

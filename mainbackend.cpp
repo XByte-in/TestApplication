@@ -1,6 +1,7 @@
 #include "mainbackend.h"
 #include <QDebug>
 #include <QProcess>
+#include <QPixmap>
 MainBackend::MainBackend(QObject* parent) : QObject(parent)
 {
 
@@ -16,4 +17,10 @@ void MainBackend::openMediaFolderProcess(QString path){
     QString program = "explorer";
     argument  << path; //<< "/select,"
     process->start(program, argument);
+}
+
+bool MainBackend::isTransparent(int x, int y) {
+//    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), x, y, 1, 1);
+//     QRgb pixelValue = pixmap.toImage().pixel(0,0);
+    return false;
 }

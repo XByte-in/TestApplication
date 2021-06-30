@@ -1,7 +1,7 @@
 #ifndef MAINBACKEND_H
 #define MAINBACKEND_H
 
-
+#include <QImage>
 #include <QObject>
 #include <QNetworkReply>
 #include <QDesktopServices>
@@ -15,6 +15,7 @@ public:
 public slots:
     bool openMediaFolder(QString path);
     void openMediaFolderProcess(QString path);
+    bool isTransparent(int x, int y);
 };
 
 #endif // MAINBACKEND_H

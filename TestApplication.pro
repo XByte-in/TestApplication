@@ -1,5 +1,6 @@
 QT += quick
 QT += core
+QT += gui
 
 CONFIG += c++11
 
@@ -8,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    MyMask.cpp \
     directoryvalidator.cpp \
     main.cpp \
     mainbackend.cpp \
@@ -28,6 +30,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    MyMask.h \
     directoryvalidator.h \
     mainbackend.h \
     UiTheme.h \

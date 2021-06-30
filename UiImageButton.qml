@@ -20,7 +20,6 @@ Button {
     property bool pImageAnimationRunning: false
     property int pImageWidth : 0
     property int pImageHeight : 0
-    property int pAcceptedMouseButtons : Qt.LeftButton
 
     horizontalPadding: 0
     verticalPadding: 0
@@ -60,7 +59,6 @@ Button {
     MouseArea {
         anchors.fill: parent
         cursorShape: iControl.pMouseCursor
-        acceptedButtons:pAcceptedMouseButtons
         onPressed: {
             UiToolTip.visible = false
             mouse.accepted = false
