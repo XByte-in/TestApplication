@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2020-2021 BlueStack Systems, Inc.
+ * All Rights Reserved
+ *
+ * THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF BLUESTACK SYSTEMS, INC.
+ * The copyright notice above does not evidence any actual or intended
+ * publication of such source code.
+ */
+
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -5,6 +14,10 @@ import QtQuick.Window 2.15
 import QtQuick.Shapes 1.15
 import Qt.labs.platform 1.1
 import UiToolTipControl 1.0
+//import DialogButtonModel 1.0
+//import DialogButtonModelList 1.0
+//import UiFolderDialog 1.0
+
 import QtQuick.Shapes 1.12
 
 Rectangle {
@@ -15,21 +28,21 @@ Rectangle {
 
     property bool pIsBootComplete: false
     property bool pIsMacoFeatureEnabled: true
-    
+
+    //property KmmEditorWindow pKmmEditorWindow: null
     property bool pGameControlsEnabled: true
     property bool pIsGameControlsOverlayEnabled: true
     property bool pGameControlsSensitivityEnabled: false
     property bool pGameControlsPopupLoaded: false
+    property bool pIsEcoModeEnabled: false
 
 
     property bool pIsMacroEnabled: true
     property bool pMouseCursorLocked: false
-    property bool pIsEcoModeEnabled: true
     property bool pIsEcoModeSoundEnabled: false
     property bool pRunTrimAnimation: false
     property var pMediaPrompt
 
-    property var pScreenshotBtn
     property string pScreenshotFilename
     property string pScreenShotNoticeText
     property bool pIsSyncEnable: true
@@ -59,14 +72,17 @@ Rectangle {
     signal sidebarHideClicked
     signal sidebarSettingClicked
 
+    //Connections { target: pKmmEditorWindow }
+    property UiWindowedPopup pKebabMenuWin: null
+    property UiWindowedPopup pEcoModeWin: null
+    property UiWindowedPopup pGameControlsWin: null
+
     property list<QtObject> iAllSidebarItems: [
         MainSidebarElement {
             pElementId: pCollapse
             pAsset: "TitlebarCollapse"
             pTooltipText: "Close sidebar"
-            onClicked: console.log(button.enabled)
-            onRightClicked: console.log("right")
-            pAcceptedMouseButtons: Qt.LeftButton | Qt.RightButton
+            onClicked: sidebarHideClicked()
         },
         MainSidebarElement {
             pElementId: pFullscreen
@@ -105,10 +121,10 @@ Rectangle {
             pAsset: "SidebarControls"
             pTooltipText: "Game controls"
             pConfShortcutProperty: ""
-            pIsEnable: true
+            pIsEnable: pIsBootComplete
             pAcceptedMouseButtons: Qt.LeftButton | Qt.RightButton
-            onClicked: fOpenGameControlsPopup(button)
-            onRightClicked: fOpenControlsEditorWindow(button)
+            onClicked: fOpenGameControlsPopup()
+            onRightClicked: fOpenControlsEditorWindow()
         },
         MainSidebarElement {
             pElementId: pSync
@@ -142,7 +158,7 @@ Rectangle {
             pTooltipText: "Install apk"
             pConfShortcutProperty: "install_apk"
             pIsEnable: pIsBootComplete
-            onClicked: iFileDialog.open()
+            onClicked: fHandleInstallApkBtnClicked()
         },
         MainSidebarElement {
             pElementId: pScreenshot
@@ -150,7 +166,7 @@ Rectangle {
             pTooltipText: "Take screenshot"
             pConfShortcutProperty: "take_screenshot"
             pIsEnable: pIsBootComplete
-            onClicked: fHandleScreenshotBtnClicked(button)
+            onClicked: fHandleScreenshotBtnClicked()
         },
         MainSidebarElement {
             pElementId: pMediaFolder
@@ -188,7 +204,7 @@ Rectangle {
             pTooltipText: "Eco mode"
             pConfShortcutProperty: "toggle_eco_mode"
             pIsEnable: pIsBootComplete
-            onClicked: fOpenEcoModePopup(button)
+            onClicked: fOpenEcoModePopup()
         },
         MainSidebarElement {
             pElementId: pSettings
@@ -232,9 +248,9 @@ Rectangle {
     ]
 
     Component.onCompleted: {
-        pIsMacoFeatureEnabled = true; //uiBackend.confGetBool("bst.feature.macros", true)
-        pIsGameControlsOverlayEnabled = true; //uiBackend.confGetBool("bst.key_controls_overlay_enabled")
-        //fResetSidebar()
+        //pIsMacoFeatureEnabled = uiBackend.confGetBool("bst.feature.macros", true)
+        //pIsGameControlsOverlayEnabled = uiBackend.confGetBool("bst.key_controls_overlay_enabled")
+        fResetSidebar()
     }
 
     onHeightChanged: {
@@ -292,7 +308,479 @@ Rectangle {
             for (var i = 0; i < iFileDialog.files.length; ++i) {
                 var path = iFileDialog.files[i].toString()
                 path = path.replace(/^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/, "")
-                plrBackend.onInstallApkClicked(path)
+                //plrBackend.onInstallApkClicked(path)
+            }
+        }
+    }
+
+//    UiFolderDialog {
+//        id: iSelectMediaFolderDialog
+//        visible: false
+//        folder: StandardPaths.standardLocations(StandardPaths.PicturesLocation)[0]
+//        onAccepted: {
+//            iSelectMediaFolderDialog.close()
+//            var currentPath = currentFolder.toString()
+//            currentPath = currentPath.replace( /^(file:\/{3})|(qrc:\/{2})|(http:\/{2})/, "")
+//            if (plrBackend.isDirWritable(currentPath)) {
+//                pMediaPrompt.close()
+//                pMediaPrompt.destroy()
+//                uiBackend.confSetString("bst.media_folder", currentPath)
+//                uiBackend.confCommit()
+//                plrBackend.takeScreenshot(currentPath)
+//            } else {
+//                pScreenShotNoticeText = qsTranslate("QObject", "BlueStacks does not have the required permissions to store in the folder you have selected")
+//            }
+//        }
+//    }
+
+//    Component {
+//        id: iSelectMediaPrompt
+//        UiMessageDialog {
+//            title: qsTranslate("QObject", "Open media folder")
+//            pDescription: qsTranslate("QObject", "Your media will be automatically saved in the Android Gallery and in the folder below. You may choose a custom folder.")
+//            pDialogType: UiDialog.DialogTypes.Simple
+//            pNotice: pScreenShotNoticeText
+//            pButtonsList: DialogButtonModelList {
+//                pButtons: [
+//                    DialogButtonModel {
+//                        pColor: UiTheme.buttons.colors.accent
+//                        pText: qsTranslate("QObject", "Choose custom")
+//                        onClicked: {
+//                            iSelectMediaFolderDialog.open()
+//                        }
+//                    },
+//                    DialogButtonModel {
+//                        pColor: UiTheme.buttons.colors.secondary
+//                        pText: qsTranslate("QObject", "Use current")
+//                        onClicked: {
+//                            plrBackend.takeScreenshot("")
+//                            close()
+//                        }
+//                    }
+//                ]
+//            }
+//        }
+//    }
+
+    Component {
+        id: iEcoModePopupComponent
+        UiWindowedPopup {
+            id: iEcoModePopup
+            contentWidth: 180
+            contentHeight: 100
+            visible: false
+
+            Rectangle {
+                anchors.centerIn: parent
+                anchors.fill: parent
+                color: UiTheme.colors.primary80
+                border.width: 1
+                border.color: UiTheme.colors.primary60
+                ColumnLayout {
+                    spacing: 0
+                    anchors.fill: parent
+                    anchors.margins: 10
+
+                    RowLayout {
+                        spacing: 0
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignTop
+                        Text {
+                            text: qsTranslate("QObject", "Eco mode")
+                            font: UiTheme.fonts.titleExtraSmall
+                            color: UiTheme.colors.primary10
+                            Layout.alignment: Qt.AlignLeft
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        UiImageButton {
+                            asset: "MenuHelp"
+                            pImageHeight: 16
+                            pImageWidth: 16
+                            Layout.rightMargin: 8
+                            UiToolTip.text: qsTranslate("QObject", "Help")
+                            onClicked: {
+                                uiBackend.openHelpArticle("EcoMode_help")
+                            }
+                            pMouseCursor: hovered ? Qt.PointingHandCursor : Qt.ArrowCursor
+                        }
+
+                        UiToggleButton {
+                            id: iEcoModeToggleBtn
+                            checked: pIsEcoModeEnabled
+                            pSize: UiTheme.toggleButtons.sizes.small
+                            onCheckedChanged: {
+                                if(pIsEcoModeEnabled !== checked) {
+                                    pIsEcoModeEnabled = checked
+                                    if (!checked)
+                                        pIsEcoModeSoundEnabled = false
+                                    var fps = pIsEcoModeEnabled ? parseInt(iEcoModeFpsSpinBox.value) : 0
+                                    //plrBackend.enableEcoMode(pIsEcoModeEnabled, fps)
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        height: 1
+                        color: UiTheme.colors.primary60
+                        Layout.fillWidth: true
+                    }
+
+                    RowLayout {
+                        id: iSoundRow
+                        enabled: pIsEcoModeEnabled
+                        Layout.fillWidth: true
+                        Layout.topMargin: 5
+                        Text {
+                            text: qsTranslate("QObject", "Sound")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary10
+                            opacity: enabled ? 1 : 0.5
+                            Layout.preferredHeight: 20
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        UiToggleButton {
+                            id: iEcoModeSoundToggleBtn
+                            checked: pIsEcoModeSoundEnabled
+                            pSize: UiTheme.toggleButtons.sizes.small
+                            onCheckedChanged: {
+                                if(pIsEcoModeSoundEnabled != checked) {
+                                    pIsEcoModeSoundEnabled = checked
+                                    //plrBackend.muteUnmuteVolume()
+                                }
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        id: iEcoFPSRow
+                        enabled: pIsEcoModeEnabled
+                        Layout.fillWidth: true
+                        Layout.topMargin: 5
+                        Text {
+                            text: qsTranslate("QObject", "Eco FPS(1-30)")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary10
+                            opacity: enabled ? 1 : 0.5
+                            Layout.preferredHeight: 20
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        UiSpinBox {
+                            id: iEcoModeFpsSpinBox
+                            realFrom: 1
+                            realTo: 30
+                            realStepSize: 1
+                            //realValue: plrBackend.getEcoModeMaxFps()
+                            decimalPlaces: 0
+                            inputMethodHints: Qt.ImhDigitsOnly
+                            validator: RegularExpressionValidator { regularExpression: /([1-9]|[12][0-9]|3[0])/ }
+                        }
+                    }
+                }
+            }
+            onClosePopup: {
+                iEcoModePopup.destroy()
+                if (pIsEcoModeEnabled) {
+                    //plrBackend.setEcoModeMaxFps(parseInt(iEcoModeFpsSpinBox.value))
+                }
+                pEcoModeWin = null
+            }
+        }
+    }
+
+    Component {
+        id: iGameControlsPopupComponent
+        UiWindowedPopup {
+            id: iGameControlsPopup
+            contentWidth: iContentRect.width
+            contentHeight: iContentRect.height
+            visible: false
+            property alias schemeModel: iSchemeCombobox.model
+            property alias schemeIdx: iSchemeCombobox.currentIndex
+
+            onSchemeModelChanged: { if (schemeModel.length < 1) iSchemeColumn.visible = false }
+            onWidthChanged: {
+                iGameControlsPopup.x = iSidebar.mapToGlobal(0, 0).x - iGameControlsPopup.width + iGameControlsPopup.shadowThickness
+            }
+            function updateSenstivity() {
+                iMouseSensitivityXSpinBox.realValue =  pGameControlsSensitivityEnabled ? kmmBackend.getMouseSensitivityX() : 1
+                iMouseSensitivityYSpinBox.realValue =  pGameControlsSensitivityEnabled ? kmmBackend.getMouseSensitivityY() : 1
+            }
+
+            Rectangle {
+                id: iContentRect
+                width: iContentLayout.width + iContentLayout.anchors.leftMargin + iContentLayout.anchors.rightMargin
+                height: iContentLayout.height + iContentLayout.anchors.topMargin + iContentLayout.anchors.bottomMargin
+                color: UiTheme.colors.primary70
+                border.width: 1
+                border.color: UiTheme.colors.primary60
+                ColumnLayout {
+                    id: iContentLayout
+                    width: Math.max(164, childrenRect.width)
+                    anchors.centerIn: parent
+                    anchors.margins: 8
+                    spacing: 8
+                    RowLayout {
+                        spacing: 4
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: childrenRect.height
+                        Text {
+                            text: qsTranslate("QObject", "Game controls")
+                            font: UiTheme.fonts.titleExtraSmall
+                            color: UiTheme.colors.primary10
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        RowLayout {
+                            Layout.preferredWidth: childrenRect.width
+                            Layout.preferredHeight: childrenRect.height
+                            spacing: 4
+                            UiImageButton {
+                                asset: "MenuHelp"
+                                pImageHeight: 16
+                                pImageWidth: 16
+                                UiToolTip.text: qsTranslate("QObject", "Help")
+                                onClicked: uiBackend.openHelpArticle("game_controls_help")
+                                pMouseCursor: hovered ? Qt.PointingHandCursor : Qt.ArrowCursor
+                            }
+                            UiToggleButton {
+                                id: iGameControlsToggleBtn
+                                checked: pGameControlsEnabled
+                                pSize: UiTheme.toggleButtons.sizes.small
+                                UiToolTip.text: qsTranslate( "QObject", "Toggle game controls")
+                                // UiToolTip.confShortcutProperty: "enable_disable_game_controls"
+                                onCheckedChanged: {
+                                    if (pGameControlsPopupLoaded) {
+                                        //plrBackend.setKeyMappingState(checked)
+                                        //kmmBackend.toggleOverlayVisibility(checked ? iOverlayToggleBtn.checked : checked, false)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 1
+                        color: UiTheme.colors.primary60
+                    }
+
+                    RowLayout {
+                        id: iOverlayRow
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: childrenRect.height
+                        spacing: 4
+                        enabled: iGameControlsToggleBtn.checked
+                        opacity: enabled ? 1 : 0.5
+                        Text {
+                            text: qsTranslate("QObject", "On-screen controls")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary20
+                            horizontalAlignment: Text.AlignLeft
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        UiToggleButton {
+                            id: iOverlayToggleBtn
+                            pSize: UiTheme.toggleButtons.sizes.small
+                            checked: pIsGameControlsOverlayEnabled
+                            UiToolTip.text: qsTranslate("QObject", "Show/Hide on-screen controls")
+                            // UiToolTip.confShortcutProperty: "show_hide_on_screen_controls"
+                            onClicked: {
+                                pIsGameControlsOverlayEnabled = checked
+                                kmmBackend.toggleOverlayVisibility(pIsGameControlsOverlayEnabled)
+                            }
+                        }
+                    }
+
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: childrenRect.height
+                        spacing: 4
+                        enabled: iOverlayRow.enabled && iOverlayToggleBtn.checked
+                        Text {
+                            text: qsTranslate("QObject", "Opacity")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary20
+                            horizontalAlignment: Text.AlignLeft
+                            opacity: enabled ? 1 : 0.5
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        UiSlider {
+                            pSize: UiTheme.sliders.sizes.small
+                            from: 0
+                            to: 100
+                            stepSize: 1
+                            value: uiBackend.confGetI32("bst.key_controls_overlay_opacity")
+                            Layout.preferredWidth: 80
+                            onValueChanged: kmmBackend.setOverlayTransparency( parseInt(value) )
+                            onPressedChanged: kmmBackend.saveOverlayOpacityInConf( parseInt(value) )
+                        }
+                    }
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 1
+                        color: UiTheme.colors.primary60
+                        visible: iSchemeColumn.visible
+                    }
+                    ColumnLayout {
+                        id: iSchemeColumn
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: childrenRect.height
+                        spacing: 4
+                        enabled: iOverlayRow.enabled
+                        opacity: enabled ? 1 : 0.5
+                        Text {
+                            text: qsTranslate("QObject", "Scheme")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary10
+                        }
+                        UiComboBox {
+                            id: iSchemeCombobox
+                            pSize: UiTheme.comboBoxes.sizes.small
+                            Layout.preferredHeight: 24
+                            Layout.fillWidth: true
+                            onActivated: {
+                                if (pGameControlsPopupLoaded) {
+                                    kmmBackend.setActiveScheme(model[currentIndex])
+                                    pGameControlsSensitivityEnabled = kmmBackend.hasPanControl()
+                                    updateSenstivity()
+                                }
+                            }
+                        }
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: childrenRect.height
+                        spacing: 4
+                        enabled: iOverlayRow.enabled
+                        visible: pGameControlsSensitivityEnabled
+                        opacity: enabled ? 1 : 0.5
+                        Text {
+                            text: qsTranslate("QObject", "Mouse sensitivity")
+                            font: UiTheme.fonts.bodySmall
+                            color: UiTheme.colors.primary20
+                        }
+                        RowLayout {
+                            spacing: 16
+                            Layout.preferredWidth: childrenRect.width
+                            Layout.preferredHeight: childrenRect.height
+                            RowLayout {
+                                Layout.preferredWidth: childrenRect.width
+                                Layout.preferredHeight: childrenRect.height
+                                spacing: 8
+                                Text {
+                                    text: "X"
+                                    font: UiTheme.fonts.bodySmall
+                                    color: UiTheme.colors.primary20
+                                    horizontalAlignment: Text.AlignLeft
+                                }
+                                UiSpinBox {
+                                    id: iMouseSensitivityXSpinBox
+                                    Layout.preferredWidth: 58
+                                    Layout.preferredHeight: 24
+                                    realFrom: 0.01
+                                    realTo: 10
+                                    realStepSize: 0.01
+                                    realValue: 1
+                                    decimalPlaces: 2
+                                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
+                                    onValueChanged: {
+                                        if (pGameControlsPopupLoaded && pGameControlsSensitivityEnabled) {
+                                            kmmBackend.setMouseSensitivity(
+                                                        iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor,
+                                                        iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor)
+                                        }
+                                    }
+                                }
+                            }
+                            RowLayout {
+                                Layout.preferredWidth: childrenRect.width
+                                Layout.preferredHeight: childrenRect.height
+                                spacing: 8
+                                Text {
+                                    text: "Y"
+                                    font: UiTheme.fonts.bodySmall
+                                    color: UiTheme.colors.primary20
+                                    horizontalAlignment: Text.AlignLeft
+                                }
+                                UiSpinBox {
+                                    id: iMouseSensitivityYSpinBox
+                                    Layout.preferredWidth: 58
+                                    Layout.preferredHeight: 24
+                                    realFrom: 0.01
+                                    realTo: 10
+                                    realStepSize: 0.01
+                                    realValue: 1
+                                    decimalPlaces: 2
+                                    inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
+                                    onValueChanged: {
+                                        if (pGameControlsPopupLoaded && pGameControlsSensitivityEnabled) {
+                                            kmmBackend.setMouseSensitivity(
+                                                        iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor,
+                                                        iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: 1
+                        color: UiTheme.colors.primary60
+                    }
+                    Text {
+                        id: iOpenEditorTxt
+                        text: qsTranslate("QObject", "Open advanced editor")
+                        font: UiTheme.fonts.bodySmall
+                        color: UiTheme.colors.primary20
+                        horizontalAlignment: Text.AlignLeft
+                        enabled: iGameControlsToggleBtn.checked
+                        opacity: enabled ? 1 : 0.5
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: {
+                                cursorShape = Qt.PointingHandCursor
+                                iOpenEditorTxt.color = UiTheme.colors.primary10
+                            }
+                            onExited: {
+                                cursorShape = Qt.ArrowCursor
+                                iOpenEditorTxt.color = UiTheme.colors.primary20
+                            }
+                            onClicked: {
+                                cursorShape = Qt.ArrowCursor
+                                iGameControlsPopup.destroy()
+                                fOpenControlsEditorWindow()
+                            }
+                        }
+                    }
+                }
+            }
+
+            onClosePopup: {
+                if (pGameControlsPopupLoaded) kmmBackend.kmmPopupCommit()
+                pGameControlsPopupLoaded = false
+                pGameControlsEnabled = iGameControlsToggleBtn.checked
+                iGameControlsPopup.destroy()
+                pGameControlsWin = null
             }
         }
     }
@@ -359,7 +847,7 @@ Rectangle {
                             onClicked: {
                                 cursorShape = Qt.ArrowCursor
                                 iScreenshotSavedPopup.visible = false
-                                plrBackend.openMediaFolder(pScreenshotFilename)
+                                //plrBackend.openMediaFolder(pScreenshotFilename)
                             }
                         }
                     }
@@ -386,7 +874,7 @@ Rectangle {
                             onClicked: {
                                 cursorShape = Qt.ArrowCursor
                                 iScreenshotSavedPopup.visible = false
-                                plrBackend.openMediaManager()
+                                //plrBackend.openMediaManager()
                             }
                         }
                     }
@@ -417,24 +905,19 @@ Rectangle {
                     Repeater {
                         model: iAllSidebarItems
                         delegate: UiImageButton {
-                            asset: model.ModelData.pAsset
-                            enabled: model.ModelData.pIsEnable
+                            Component.onCompleted: if(visible) pKebabMenuElementsCount++
+                            asset: model.modelData.pAsset
                             pImageHeight: pSidebarElementSize
                             pImageWidth: pSidebarElementSize
-                            visible: model.ModelData.pIsFeatureEnable && model.ModelData.pShowOnKebabMenu && (index > pVisibleSidebarElementsCount-1)
-                            Component.onCompleted: if(visible) pKebabMenuElementsCount++
+                            enabled: model.modelData.pIsEnable
                             UiToolTip.text: qsTranslate("QObject", model.modelData.pTooltipText)
+                            // UiToolTip.confShortcutProperty: model.modelData.pConfShortcutProperty
                             pImageAnimationRunning: model.modelData.pRunImageAnimation
+                            visible: (index > pVisibleSidebarElementsCount-1) && model.modelData.pIsFeatureEnable && model.modelData.pShowOnKebabMenu
                             MouseArea {
                                 anchors.fill: parent
                                 acceptedButtons: model.modelData.pAcceptedMouseButtons
-                                onClicked:
-                                {
-                                    if(mouse.button === Qt.LeftButton)
-                                        model.modelData.clicked(iBtn)
-                                    else
-                                        model.modelData.rightClicked(iBtn)
-                                }
+                                onClicked: mouse.button === Qt.LeftButton ? model.modelData.clicked() : model.modelData.rightClicked()
                             }
                         }
                     }
@@ -445,6 +928,7 @@ Rectangle {
                 iKebabMenuPopup.close()
                 iKebabMenuPopup.destroy()
                 iKebabMenuBtn.asset = "SidebarKebabClosed"
+                pKebabMenuWin = null
             }
         }
     }
@@ -460,20 +944,15 @@ Rectangle {
                     pImageHeight: pSidebarElementSize
                     pImageWidth: pSidebarElementSize
                     enabled: model.modelData.pIsEnable
-                    visible: (index <= pVisibleSidebarElementsCount-1) && model.modelData.pIsFeatureEnable && model.modelData.pShowViaRepaterOnly
                     UiToolTip.text: qsTranslate("QObject", model.modelData.pTooltipText)
+                    // UiToolTip.confShortcutProperty: model.modelData.pConfShortcutProperty
                     pImageAnimationRunning: model.modelData.pRunImageAnimation
                     MouseArea {
                         anchors.fill: parent
                         acceptedButtons: model.modelData.pAcceptedMouseButtons
-                        onClicked:
-                        {
-                            if(mouse.button === Qt.LeftButton)
-                                model.modelData.clicked(iBtn)
-                            else
-                                model.modelData.rightClicked(iBtn)
-                        }
+                        onClicked: mouse.button === Qt.LeftButton ? model.modelData.clicked() : model.modelData.rightClicked()
                     }
+                    visible: (index <= pVisibleSidebarElementsCount-1) && model.modelData.pIsFeatureEnable && model.modelData.pShowViaRepaterOnly
                 }
             }
         }
@@ -486,11 +965,17 @@ Rectangle {
             asset: "SidebarKebabClosed"
             onClicked: {
                 asset = "SidebarKebabOpen"
-                var kebabMenuWin = iKebabMenuPopupComponent.createObject(iAppwin)
-                kebabMenuWin.screen = iAppwin.screen
-                kebabMenuWin.x = iSidebar.mapToGlobal(0, 0).x - kebabMenuWin.width + kebabMenuWin.shadowThickness
-                kebabMenuWin.y = iKebabMenuBtn.mapToGlobal(0, 0).y - kebabMenuWin.shadowThickness
-                kebabMenuWin.show()
+                if (pKebabMenuWin != null)
+                {
+                    if (pKebabMenuWin.visible)
+                        pKebabMenuWin.closePopup()
+                    return
+                }
+                pKebabMenuWin = iKebabMenuPopupComponent.createObject(iAppwin)
+                pKebabMenuWin.screen = iAppwin.screen
+                pKebabMenuWin.x = iSidebar.mapToGlobal(0, 0).x - pKebabMenuWin.width + pKebabMenuWin.shadowThickness
+                pKebabMenuWin.y = iKebabMenuBtn.mapToGlobal(0, 0).y - pKebabMenuWin.shadowThickness
+                pKebabMenuWin.show()
             }
         }
         Item {
@@ -503,6 +988,8 @@ Rectangle {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
 
             asset: "SidebarSettings"
+            UiToolTip.text: qsTranslate("QObject", "Settings")
+            // UiToolTip.confShortcutProperty: "open_settings"
             onClicked: sidebarSettingClicked()
         }
         UiImageButton {
@@ -510,10 +997,12 @@ Rectangle {
             pImageHeight: pSidebarElementSize
             pImageWidth: pSidebarElementSize
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            enabled: pIsBootComplete
 
             asset: "SidebarBack"
-            enabled: pIsBootComplete
-            onClicked: plrBackend.onBackClicked()
+            UiToolTip.text: qsTranslate("QObject", "Back")
+            // UiToolTip.confShortcutProperty: "go_back"
+            //onClicked: plrBackend.onBackClicked()
         }
         UiImageButton {
             id: iHomeBtn
@@ -523,22 +1012,26 @@ Rectangle {
             enabled: pIsBootComplete
 
             asset: "SidebarHome"
-            onClicked: plrBackend.onHomeClicked()
+            UiToolTip.text: qsTranslate("QObject", "Home")
+            // UiToolTip.confShortcutProperty: "go_home"
+            //onClicked: plrBackend.onHomeClicked()
         }
         UiImageButton {
             id: iRecentBtn
             pImageHeight: pSidebarElementSize
             pImageWidth: pSidebarElementSize
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
+            enabled: pIsBootComplete
 
             asset: "SidebarRecents"
-            enabled: pIsBootComplete
-            onClicked: plrBackend.onRecentAppsClicked()
+            UiToolTip.text: qsTranslate("QObject", "Recents")
+            // UiToolTip.confShortcutProperty: "open_recent_apps"
+            //onClicked: plrBackend.onRecentAppsClicked()
         }
     }
 
     function fUpdateMouseCursorImage(mouseStateLocked) {
-        pMouseCursorLocked = mouseStateLocked ? "SidebarLockCursorActive" : "SidebarLockCursor"
+        pMouseCursorLocked = mouseStateLocked
     }
 
     function fUpdateMacroBtnEnabled(enable) {
@@ -547,37 +1040,46 @@ Rectangle {
 
     function fTrimMemoryClick() {
         pRunTrimAnimation = true
-        plrBackend.onTrimMemoryClicked()
+        //plrBackend.onTrimMemoryClicked()
     }
     function fHideTrimMemoryLoader() {
         pRunTrimAnimation = false
     }
 
-    function fHandleScreenshotBtnClicked(button) {
+    function fHandleInstallApkBtnClicked() {
+        iFileDialog.open()
+    }
+
+    function fHandleScreenshotBtnClicked() {
         var mediaFolder = uiBackend.confGetString("bst.media_folder")
-        pScreenshotBtn = button
         if (mediaFolder === "") {
-            mediaFolder = plrBackend.getMediaFolder()
+            //mediaFolder = plrBackend.getMediaFolder()
             pScreenShotNoticeText = mediaFolder
             pMediaPrompt = iSelectMediaPrompt.createObject(iAppwin)
             pMediaPrompt.show()
-        } else { plrBackend.takeScreenshot(mediaFolder) }
+        }// else { plrBackend.takeScreenshot(mediaFolder) }
     }
     function fOpenScreenshotSavedPopup(filename) {
         pScreenshotFilename = filename
         var screenshotWin = iScreenshotPopupComponent.createObject(iAppwin)
         screenshotWin.screen = iAppwin.screen
         screenshotWin.x = iSidebar.mapToGlobal(0, 0).x - screenshotWin.width + screenshotWin.shadowThickness
-        screenshotWin.y = pScreenshotBtn.mapToGlobal(0, 0).y - screenshotWin.shadowThickness
+        screenshotWin.y = fGetPopupTopPoint(pScreenshot) - screenshotWin.shadowThickness
         screenshotWin.show()
     }
 
-    function fOpenEcoModePopup(button) {
-        var ecoModeWin = iEcoModePopupComponent.createObject(iAppwin)
-        ecoModeWin.screen = iAppwin.screen
-        ecoModeWin.x = iSidebar.mapToGlobal(0, 0).x - ecoModeWin.width + ecoModeWin.shadowThickness
-        ecoModeWin.y = button.mapToGlobal(0, 0).y - ecoModeWin.shadowThickness
-        ecoModeWin.show()
+    function fOpenEcoModePopup() {
+        if (pEcoModeWin != null)
+        {
+            if (pEcoModeWin.visible)
+                pEcoModeWin.closePopup()
+            return
+        }
+        pEcoModeWin = iEcoModePopupComponent.createObject(iAppwin)
+        pEcoModeWin.screen = iAppwin.screen
+        pEcoModeWin.x = iSidebar.mapToGlobal(0, 0).x - pEcoModeWin.width + pEcoModeWin.shadowThickness
+        pEcoModeWin.y = fGetPopupTopPoint(pEcoMode) - pEcoModeWin.shadowThickness
+        pEcoModeWin.show()
     }
 
     function fUpdateVolumeState(isMuted) {
@@ -588,13 +1090,35 @@ Rectangle {
         }
     }
 
-    function fOpenGameControlsPopup(button) {
-        var gameControlsWin = iGameControlsPopupComponent.createObject(iAppwin)
-        gameControlsWin.screen = iAppwin.screen
+    function fOpenGameControl(mouse) {
+        if(mouse.button === Qt.RightButton)
+            fOpenControlsEditorWindow()
+        else
+            fOpenGameControlsPopup()
+    }
+    function fOpenGameControlsPopup() {
+        kmmBackend.kmmPopupStart()
+        if (pGameControlsWin != null)
+        {
+            if (pGameControlsWin.visible)
+                pGameControlsWin.closePopup()
+            return
+        }
+        pGameControlsWin = iGameControlsPopupComponent.createObject(iAppwin)
+        pGameControlsWin.screen = iAppwin.screen
 
-        gameControlsWin.x = iSidebar.mapToGlobal(0, 0).x - gameControlsWin.width + gameControlsWin.shadowThickness
-        gameControlsWin.y =iKebabMenuBtn.mapToGlobal(0, 0).y - gameControlsWin.shadowThickness
-        gameControlsWin.show()
+        //This is a variant list with index of the selected scheme
+        //stored at 0th location and scheme list at 1st.
+        var schemeInfo = kmmBackend.getPopupSchemes()
+        pGameControlsWin.schemeModel = schemeInfo[1]
+        pGameControlsWin.schemeIdx = schemeInfo[0]
+        pGameControlsSensitivityEnabled = kmmBackend.hasPanControl()
+        pGameControlsWin.updateSenstivity()
+
+        pGameControlsWin.x = iSidebar.mapToGlobal(0, 0).x - pGameControlsWin.width + pGameControlsWin.shadowThickness
+        pGameControlsWin.y = fGetPopupTopPoint(pGameControl) - pGameControlsWin.shadowThickness
+        pGameControlsPopupLoaded = true
+        pGameControlsWin.show()
     }
     function fOpenControlsEditorWindow() {
         if (pKmmEditorWindow != null) return
@@ -623,111 +1147,17 @@ Rectangle {
     function fToggleGameControlsVisibility(isVisible) {
         pIsGameControlsOverlayEnabled = isVisible
     }
-    property real mx: 1.00
-    property real my: 1.00
-    Component {
-        id: iGameControlsPopupComponent
-        UiWindowedPopup {
-            id: iGameControlsPopup
-            contentWidth: iContentRect.width
-            contentHeight: iContentRect.height
-            visible: false
-            onWidthChanged: {
-                iGameControlsPopup.x = iSidebar.mapToGlobal(0, 0).x - iGameControlsPopup.width + iGameControlsPopup.shadowThickness
-            }
 
-            Rectangle {
-                id: iContentRect
-                width: iContentLayout.width + iContentLayout.anchors.leftMargin
-                       + iContentLayout.anchors.rightMargin
-                height: iContentLayout.height + iContentLayout.anchors.topMargin
-                        + iContentLayout.anchors.bottomMargin
-                color: UiTheme.colors.primary70
-                border.width: 1
-                border.color: UiTheme.colors.primary60
-
-                ColumnLayout {
-                    id: iContentLayout
-                    width: Math.max(164, childrenRect.width)
-                    anchors.centerIn: parent
-                    anchors.margins: 8
-                    spacing: 8
-
-                    RowLayout {
-                        spacing: 16
-                        Layout.preferredWidth: childrenRect.width
-                        Layout.preferredHeight: childrenRect.height
-                        RowLayout {
-                            Layout.preferredWidth: childrenRect.width
-                            Layout.preferredHeight: childrenRect.height
-                            spacing: 8
-                            Text {
-                                text: "X"
-                                font: UiTheme.fonts.bodySmall
-                                color: UiTheme.colors.primary20
-                                horizontalAlignment: Text.AlignLeft
-                            }
-                            UiSpinBox {
-                                id: iMouseSensitivityXSpinBox
-                                Layout.preferredWidth: 58
-                                Layout.preferredHeight: 24
-                                realFrom: 0.01
-                                realTo: 10
-                                realStepSize: 0.01
-                                realValue: mx
-                                decimalPlaces: 2
-
-                                inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
-
-                                onValueChanged: {
-                                    mx = iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor
-                                    my = iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor
-                                    console.log("------")
-                                    console.log("X: "+ mx)
-                                    console.log("Y: "+ my)
-                                }
-                            }
-                        }
-                        RowLayout {
-                            Layout.preferredWidth: childrenRect.width
-                            Layout.preferredHeight: childrenRect.height
-                            spacing: 8
-                            Text {
-                                text: "Y"
-                                font: UiTheme.fonts.bodySmall
-                                color: UiTheme.colors.primary20
-                                horizontalAlignment: Text.AlignLeft
-                            }
-                            UiSpinBox {
-                                id: iMouseSensitivityYSpinBox
-                                Layout.preferredWidth: 58
-                                Layout.preferredHeight: 24
-                                realFrom: 0.01
-                                realTo: 10
-                                realStepSize: 0.01
-                                realValue: my
-                                decimalPlaces: 2
-
-                                inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                validator: RegExpValidator { regExp: /^(?=.*[0-9])\d{1}(?:\.\d{0,2})?$|^10$/}
-
-                                onValueChanged: {
-                                    mx = iMouseSensitivityXSpinBox.value / iMouseSensitivityXSpinBox.factor
-                                    my = iMouseSensitivityYSpinBox.value / iMouseSensitivityYSpinBox.factor
-                                    console.log("------")
-                                    console.log("X: "+ mx)
-                                    console.log("Y: "+ my)
-                                }
-                            }
-                        }
-                    }
+    function fGetPopupTopPoint(elementId) {
+        var applicableIndex = -1
+        for (var i = 0; i < iAllSidebarItems.length; i++) {
+            if(iAllSidebarItems[i].pShowViaRepaterOnly && iAllSidebarItems[i].pIsFeatureEnable) {
+                applicableIndex  += 1
+                if(iAllSidebarItems[i].pElementId === elementId && applicableIndex <= pVisibleSidebarElementsCount-1) {
+                    return iSidebar.mapToGlobal(0, 0).y + applicableIndex * pSidebarElementSize;
                 }
             }
-
-            onClosePopup: {
-                iGameControlsPopup.destroy()
-            }
         }
+        return iKebabMenuBtn.mapToGlobal(0, 0).y
     }
 }
