@@ -10,7 +10,7 @@ import DirValidator 1.0
 //import DialogButtonModelList 1.0
 //import UiDialogWindow 1.0
 import UiToolTipControl 1.0
-import MyMask 1.0
+import MaskedMouseArea 1.0
 
 ApplicationWindow {
     id: iAppwin
@@ -69,6 +69,7 @@ ApplicationWindow {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     UiImage {
+                        id: leftImage
                         asset: "EditorDpad"
                         pImageWidth: 200
                         pImageHeight: pImageWidth
@@ -81,6 +82,16 @@ ApplicationWindow {
                                 mouse.accepted = false
                             }
                         }
+                        // MaskedMouseArea {
+                        //     id:leftImageAree
+                        //     anchors.fill: parent
+                        //     alphaThreshold: 0.4
+                        //     maskSource: leftImage.source
+                        //     onClicked: {
+                        //         console.log("left Image clicked")
+                        //         mouse.accepted = false
+                        //     }
+                        // }
                     }
                     UiImage {
                         id: rytImage
@@ -98,6 +109,16 @@ ApplicationWindow {
                                 mouse.accepted = false
                             }
                         }
+                        // MaskedMouseArea {
+                        //     id: rytImageAree
+                        //     anchors.fill: parent
+                        //     alphaThreshold: 0.4
+                        //     maskSource: rytImage.source
+                        //     onClicked: {
+                        //         console.log("Right Image clicked")
+                        //         mouse.accepted = false
+                        //     }
+                        // }
                     }
                 }
                 MainSidebar {

@@ -13,10 +13,9 @@
 #include <d3d11.h>
 #include "qsgrendererinterface.h"
 #include <QFontDatabase>
-
 #include "directoryvalidator.h"
 #include "UiToolTip.h"
-#include "MyMask.h"
+#include "MaskedMouseArea.h"
 #include "UiTheme.h"
 // #include "UiDialogButtonModel.h"
 // #include "UiDialogButtonModelList.h"
@@ -58,7 +57,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<DirectoryValidator>("DirValidator", 1, 0, "DirValidator");
     qmlRegisterType<UiToolTip>("UiToolTipControl", 1, 0, "UiToolTip");
-    qmlRegisterType<MyMask>("MyMask",1,0,"MyMask");
+    qmlRegisterType<MaskedMouseArea>("MaskedMouseArea", 1, 0, "MaskedMouseArea");
     // qmlRegisterType<UiDialogWindow>("UiDialogWindow", 1, 0, "UiDialogWindow");
     // qmlRegisterType<UiDialogButtonModelList>("DialogButtonModelList", 1, 0, "DialogButtonModelList");
     // qmlRegisterType<UiDialogButtonModel>("DialogButtonModel", 1, 0, "DialogButtonModel");
