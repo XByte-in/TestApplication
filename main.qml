@@ -4,11 +4,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Window 2.15
 import QtQuick.Shapes 1.12
 import QtQml.Models 2.15
-
 import DirValidator 1.0
-//import DialogButtonModel 1.0
-//import DialogButtonModelList 1.0
-//import UiDialogWindow 1.0
 import UiToolTipControl 1.0
 import MaskedMouseArea 1.0
 
@@ -48,7 +44,44 @@ ApplicationWindow {
                 MouseArea {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    onPositionChanged: iAppwin.startSystemMove()
+                    property var startingPosition
+                    property bool isPressed: false
+                    property bool skipFirstEvent: false
+
+                    onPressed: {
+                        isPressed = true
+                        startingPosition  = Qt.point(mouse.x, mouse.y)
+                    }
+                    onReleased: isPressed = false
+
+                    onDoubleClicked: {
+                        iAppwin.visibility === ApplicationWindow.Windowed ? iAppwin.showMaximized() : iAppwin.showNormal()
+                    }
+                    onPositionChanged: {
+                        if(isPressed) {
+                            if (iAppwin.visibility === ApplicationWindow.Maximized) {
+                                var actualX = iAppwin.x
+                                var mx = (startingPosition.x-iAppwin.x) / iAppwin.width
+                                var my = mouse.y - iAppwin.y
+
+                                iAppwin.showNormal()
+                                iAppwin.x = actualX + startingPosition.x - mx*iAppwin.width
+                                iAppwin.y = startingPosition.y
+
+                                skipFirstEvent = true
+                            } else {
+                                if(skipFirstEvent) {
+                                    startingPosition  = Qt.point(mouse.x, mouse.y)
+                                    skipFirstEvent = false
+                                } else {
+                                    var delta = Qt.point(mouse.x-startingPosition.x, mouse.y-startingPosition.y)
+                                    iAppwin.x += delta.x;
+                                    iAppwin.y += delta.y;
+                                    skipFirstEvent = false
+                                }
+                            }
+                        }
+                    }
                 }
                 UiImageButton {
                     id:iCloseBtn
@@ -68,57 +101,11 @@ ApplicationWindow {
                 UiColumnLayout {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
-                    UiImage {
-                        id: leftImage
-                        asset: "EditorDpad"
-                        pImageWidth: 200
-                        pImageHeight: pImageWidth
-                        Layout.alignment: Qt.AlignTop
-                        MouseArea {
-                            propagateComposedEvents: true
-                            anchors.fill: parent
-                            onClicked: {
-                                console.log("left Image clicked")
-                                mouse.accepted = false
-                            }
-                        }
-                        // MaskedMouseArea {
-                        //     id:leftImageAree
-                        //     anchors.fill: parent
-                        //     alphaThreshold: 0.4
-                        //     maskSource: leftImage.source
-                        //     onClicked: {
-                        //         console.log("left Image clicked")
-                        //         mouse.accepted = false
-                        //     }
-                        // }
-                    }
-                    UiImage {
-                        id: rytImage
-                        asset: "EditorDpad"
-                        pImageWidth: 200
-                        pImageHeight: pImageWidth
-                        Layout.alignment: Qt.AlignBottom
-                        Layout.topMargin: -100
-                        Layout.leftMargin: 50
-                        MouseArea {
-                            propagateComposedEvents: true
-                            anchors.fill: parent
-                            onClicked: {
-                                console.log("Right Image clicked")
-                                mouse.accepted = false
-                            }
-                        }
-                        // MaskedMouseArea {
-                        //     id: rytImageAree
-                        //     anchors.fill: parent
-                        //     alphaThreshold: 0.4
-                        //     maskSource: rytImage.source
-                        //     onClicked: {
-                        //         console.log("Right Image clicked")
-                        //         mouse.accepted = false
-                        //     }
-                        // }
+                    UiButton {
+                        pSize: UiTheme.buttons.sizes.medium
+                        pColor: UiTheme.buttons.colors.accent
+                        text: qsTranslate("QObject", "Click")
+                        onClicked: fOpenSettingsWindow("Test")
                     }
                 }
                 MainSidebar {
@@ -128,6 +115,49 @@ ApplicationWindow {
                     Layout.fillHeight: true
                     border { color: UiTheme.colors.primary60 ; width: 1 }
                 }
+            }
+        }
+    }
+    function fOpenSettingsWindow(vmName) {
+        var component = Qt.createComponent("MimSettingsWindow.qml")
+        if (component.status === Component.Ready) {
+            var pSettingsWindow = component.createObject(iAppwin,{ pVmName: vmName})
+            if (pSettingsWindow !== null) {
+                var shadowWidthDiff = 2 * pSettingsWindow.pShadowThickness
+                var settingsWidth = Math.max(iAppwin.width + shadowWidthDiff, (800  + shadowWidthDiff))
+                var settingsHeight = Math.max(iAppwin.height + shadowWidthDiff, (550 + shadowWidthDiff))
+                var settingsX = iAppwin.x - ((settingsWidth / 2) - (iAppwin.width / 2))
+                var settingsY = iAppwin.y - ((settingsHeight / 2) - (iAppwin.height / 2))
+
+
+                if (settingsX < pSettingsWindow.screen.virtualX) {
+                    if (iAppwin.x < pSettingsWindow.screen.virtualX)
+                        settingsX = pSettingsWindow.screen.virtualX
+                    else
+                        settingsX = iAppwin.x - (shadowWidthDiff / 2)
+                }
+                if (settingsY < pSettingsWindow.screen.virtualY) {
+                    if (iAppwin.y < pSettingsWindow.screen.virtualY)
+                        settingsY = pSettingsWindow.screen.virtualY
+                    else
+                        settingsY = iAppwin.y - (shadowWidthDiff / 2)
+                }
+
+                if (((settingsX + settingsWidth) > pSettingsWindow.screen.virtualX + pSettingsWindow.screen.width))
+                {
+                    settingsX = pSettingsWindow.screen.virtualX
+                            + pSettingsWindow.screen.width - settingsWidth
+                }
+                if (((settingsY + settingsHeight) > pSettingsWindow.screen.virtualY + pSettingsWindow.screen.height)) {
+                    settingsY = pSettingsWindow.screen.virtualY
+                            + pSettingsWindow.screen.height - settingsHeight
+                }
+
+                pSettingsWindow.width = settingsWidth
+                pSettingsWindow.height = settingsHeight
+                pSettingsWindow.x = settingsX
+                pSettingsWindow.y = settingsY
+                pSettingsWindow.show()
             }
         }
     }

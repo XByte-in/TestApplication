@@ -445,5 +445,12 @@
         <file>qrcAssets/VerySmallSettings_hover.svg</file>
         <file>qrcAssets/WarningIconYellow.svg</file>
         <file>qrcAssets/Zoom.svg</file>
+        <file>UiImageArea.qml</file>
+        <file>MimSettingsWindow.qml</file>
+        <file>PlrDisplaySetting.qml</file>
+        <file>PlrGraphicsSetting.qml</file>
+        <file>PlrPerformanceSetting.qml</file>
+        <file>UiDialog.qml</file>
+        <file>UiSettingsButton.qml</file>
     </qresource>
 </RCC>

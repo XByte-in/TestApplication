@@ -1,7 +1,7 @@
 #include <QGuiApplication>
+#include <QQmlApplicationEngine>
 #include <QtQuick/QQuickView>
 #include <QLoggingCategory>
-#include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
 #include <QQuickWindow>
@@ -58,9 +58,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<DirectoryValidator>("DirValidator", 1, 0, "DirValidator");
     qmlRegisterType<UiToolTip>("UiToolTipControl", 1, 0, "UiToolTip");
     qmlRegisterType<MaskedMouseArea>("MaskedMouseArea", 1, 0, "MaskedMouseArea");
-    // qmlRegisterType<UiDialogWindow>("UiDialogWindow", 1, 0, "UiDialogWindow");
-    // qmlRegisterType<UiDialogButtonModelList>("DialogButtonModelList", 1, 0, "DialogButtonModelList");
-    // qmlRegisterType<UiDialogButtonModel>("DialogButtonModel", 1, 0, "DialogButtonModel");
+
     QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D11Rhi);
     QFontDatabase::addApplicationFont(":/fonts/Rubik-Regular.ttf");
     QFontDatabase::addApplicationFont(":/fonts/Rubik-Medium.ttf");
@@ -70,14 +68,5 @@ int main(int argc, char *argv[])
     MainBackend* mainBackend = new MainBackend;
     engine->rootContext()->setContextProperty("mainBackend", mainBackend);
     engine->load(QUrl("qrc:/main.qml"));
-
-    // QObject* qmlRoot = engine->rootObjects().first();
-    // QQuickWindow* mainWindow = qobject_cast<QQuickWindow*>(qmlRoot);
-    // QMetaObject::invokeMethod(mainWindow, "fSetTitle");
-
-    // QScreen* screen = QGuiApplication::primaryScreen();
-    // QRect  screenGeometry = screen->availableGeometry();
-    // qInfo()<<screenGeometry.width();
-    // qInfo()<<screenGeometry.height();
     return app.exec();
 }

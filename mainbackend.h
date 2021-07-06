@@ -15,7 +15,7 @@ public:
 public slots:
     bool openMediaFolder(QString path);
     void openMediaFolderProcess(QString path);
-    bool isTransparent(int x, int y);
+    bool isTransparentClickAccepted(QUrl source, int parentWidth, int parentHeight, int x, int y);
 };
 
 #endif // MAINBACKEND_H

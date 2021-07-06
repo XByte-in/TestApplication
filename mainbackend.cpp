@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QPixmap>
+#include <qqmlfile.h>
 MainBackend::MainBackend(QObject* parent) : QObject(parent)
 {
 
@@ -19,8 +20,15 @@ void MainBackend::openMediaFolderProcess(QString path){
     process->start(program, argument);
 }
 
-bool MainBackend::isTransparent(int x, int y) {
-//    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), x, y, 1, 1);
-//     QRgb pixelValue = pixmap.toImage().pixel(0,0);
-    return false;
+bool MainBackend::isTransparentClickAccepted(QUrl source, int parentWidth, int parentHeight, int x, int y) {
+    QImage m_maskImage = QImage(QQmlFile::urlToLocalFileOrQrc(source));
+    x = x * m_maskImage.width() / parentWidth;
+    y = y * m_maskImage.height() / parentHeight;
+    if (x >= 0 && x <= m_maskImage.width() && y >= 0 && y <= m_maskImage.height()) {
+        int alpha = qAlpha(m_maskImage.pixel(x, y));
+        //XLOGI("Alpha: %s", alpha);
+        if(alpha < 10)
+            return false;
+    }
+    return true;
 }
